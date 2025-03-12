@@ -1,0 +1,18 @@
+{% extends "nav.html" %}
+
+{% block title %}Profile - My Website{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="sidebar">
+            <a class="active" href="{{ url_for('profile') }}">&#128100 Profile</a>
+            <a>&#9881 Profile Settings</a>
+        </div>
+        <div class="card small">
+            <img src="https://cdn-icons-png.flaticon.com/512/9706/9706583.png" width="300" height="300" margin="auto">
+            <div class="username">Lebron James</div>
+            <div>Teacher</div>
+        </div>
+        <div class="card large">Autre</div>
+    </div>
+{% endblock %}

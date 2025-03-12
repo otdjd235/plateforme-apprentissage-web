@@ -4,7 +4,13 @@ from app.db import get_db_connection
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    user_logged_in = True
+    return render_template('index.html', user_logged_in = user_logged_in)
+    
+
+@app.route('/profile')
+def profile():
+    return render_template('profile.html')
 
 @app.route('/users')
 def users():
