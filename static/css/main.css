@@ -48,24 +48,25 @@ html, body {
     background-color: #f1f1f1;
     padding: 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-grow: 1;
 }
 
-.small, .large {
+.small {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.small {
     flex: 0.75;
 }
 
 .large {
     flex: 2;
+    flex-direction: column;
+}
+
+.profile-info {
+    font-size: 18px;
+    padding: 5px;
 }
 
 .username{
