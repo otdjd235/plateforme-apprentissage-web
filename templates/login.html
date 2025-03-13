@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form.css') }}">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div class="loginFrm">
+        <form action="" class="form">
+          <h1 class="title">Login</h1>
+
+    
+          <div class="inputContainer">
+            <input type="text" class="input">
+            <label for="" class="label">Email</label>
+          </div>
+
+          <div class="inputContainer">
+            <input type="password" class="input" name="login_password" id="loging_password">
+            <label for="" class="label">Password</label>
+          </div>
+    
+
+          <div class="confirm-container">
+            <button type="button" class="cancelBtn" onclick="goBack()">Cancel</button>
+            <input type="submit" class="submitBtn" value="Login">
+          </div>
+
+        </form>
+      </div>
+<script>
+function goBack() {
+    if (document.referrer !== "") {
+        window.history.back(); // Go back if there's a previous page
+    } else {
+        window.location.href = "{{ url_for('home') }}";
+    }
+}
+</script>
+</body>
+</html>

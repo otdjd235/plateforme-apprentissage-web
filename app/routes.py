@@ -12,6 +12,14 @@ def home():
 def profile():
     return render_template('profile.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
 @app.route('/users')
 def users():
     """Afficher tous les utilisateurs"""

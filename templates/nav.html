@@ -19,16 +19,27 @@
                 </div>
             {% else %}
                 <div class="flex items-center gap-4">
-                    <button class="bg-sky-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-sky-600 text-white">Login</button>
-                    <button class="bg-green-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-green-600 text-white">Sign Up</button>
+                    <button onclick="redirectToLogin()" class="bg-sky-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-sky-600 text-white">Login</button>
+                    <button onclick="redirectToSignUp()" class="bg-green-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-green-600 text-white">Sign Up</button>
                 </div>
             {% endif %}
             </div>
         </div>
     </nav>
 
+    <script>
+        function redirectToSignUp() {
+            window.location.href = "{{ url_for('signup') }}"
+        }
+        
+        function redirectToLogin() {
+            window.location.href = "{{ url_for('login') }}"
+        }
+    </script>
+
     <body>
         {% block content %}{% endblock %}
     </body>
+
 </body>
 </html>

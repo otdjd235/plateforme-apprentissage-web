@@ -1,0 +1,136 @@
+body {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    font-family: "lato", sans-serif;
+}
+
+.signupFrm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.loginFrm{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form {
+    background-color: white;
+    width: 600px;
+    border-radius: 8px;
+    padding: 20px 40px;
+    box-shadow: 0 10px 25px rgba(92, 99, 105, .2);
+}
+  
+  .title {
+    font-size: 50px;
+    margin-bottom: 50px;
+}
+
+  .inputContainer {
+    position: relative;
+    height: 45px;
+    width: 90%;
+    margin-bottom: 17px;
+}
+
+.input {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    height: 100%;
+    width: 100%;
+    border: 1px solid #DADCE0;
+    border-radius: 7px;
+    font-size: 16px;
+    padding: 0 20px;
+    outline: none;
+    background: none;
+    z-index: 1;
+}
+  
+  
+  ::placeholder {
+    color: transparent;
+}
+
+.confirm-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+
+}
+
+.label {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 0 4px;
+    background-color: white;
+    color: #DADCE0;
+    font-size: 16px;
+    transition: 0.5s;
+    z-index: 0;
+}
+
+.submitBtn,
+.cancelBtn {
+    flex: none; /* Makes both buttons take equal width */
+    text-align: center;
+    padding: 15px; /* Ensure same padding */
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 30px;
+    width: 120px;/* Prevents excessive stretching */
+}
+
+.submitBtn {
+    background-color:  rgb(135, 156, 250);
+    color: white;
+}
+  
+.submitBtn:hover {
+    background-color: rgb(160, 176, 247);
+    transform: translateY(-2px);
+}
+
+.cancelBtn {
+    background-color: lightcoral;
+    color: white;
+}
+
+.cancelBtn:hover {
+    background-color: rgb(255, 100, 100);
+    transform: translateY(-2px);
+}
+
+.input:focus + .label {
+    top: -7px;
+    left: 3px;
+    z-index: 10;
+    font-size: 14px;
+    font-weight: 600;
+    color: rgb(135, 156, 250);
+}
+
+.input:focus {
+    border: 2px solid rgb(135, 156, 250);
+}
+
+.input:not(:placeholder-shown) + .label {
+    top: -7px;
+    left: 3px;
+    z-index: 10;
+    font-size: 14px;
+    font-weight: 600;
+}
+
