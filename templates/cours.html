@@ -1,0 +1,44 @@
+{% extends "nav.html" %}
+
+{% block title %}Home - GLO-2005{% endblock %}
+
+{% block content %}
+<div class="container-cours">
+    <h1 class="text-3xl font-bold mb-4 mt-4">Python Basics Course</h1>
+
+    <div class="description-container">
+        <div class="description-box">
+            <h1 class="text-xl font-bold px-2 pt-2">Description:</h1>
+            <p class="p-2">In this course, you will begin learning the fundamentals of Python, a beginner-friendly programming language known for its simplicity and readability. Python is an excellent first language to learn, as it provides a strong foundation that will make understanding other programming languages easier.</p>
+        </div>
+        <div class="rating-level-box">
+            <div class="level-box">
+                <h1 class="text-xl font-bold">Level: </h1>
+                <h1 class="text-xl px-2">Beginner</h1>
+            </div>
+            <div class="rating-box">
+                <h1 class="text-xl font-bold">Rating: </h1>
+                <h1 class="text-xl px-2">⭐⭐⭐⭐⭐</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <a href="{{ url_for('exercice')}}" class="relative rounded-lg overflow-hidden shadow-lg h-64 cursor-pointer hover:scale-105 transition-transform bg-sky-500/100">
+            <div class="text-3xl p-4 text-white">Part 1</div>
+            <div class="text-xl p-6 text-white">Basics</div>
+        </a>
+    
+        <a href="{{ url_for('exercice')}}" class="relative rounded-lg overflow-hidden shadow-lg h-64 cursor-pointer hover:scale-105 transition-transform bg-sky-500/100">
+            <div class="text-3xl p-4 text-white">Part 2</div>
+            <div class="text-xl p-6 text-white">Inputs</div>
+        </a>
+    
+        <a href="{{ url_for('exercice')}}" class="relative rounded-lg overflow-hidden shadow-lg h-64 cursor-pointer hover:scale-105 transition-transform bg-sky-500/100">
+            <div class="text-3xl p-4 text-white">Part 3</div>
+            <div class="text-xl p-6 text-white">Variables</div>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
