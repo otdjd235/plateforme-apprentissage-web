@@ -9,4 +9,5 @@ app.config.from_object(Config)
 
 # Import routes
 from app import routes
+from app import api
 

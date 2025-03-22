@@ -10,16 +10,11 @@
 </head>
 <body>
     <div class="signupFrm">
-        <form action="" class="form">
+        <form id="signup-form" action="/signup" method='POST' class="form">
           <h1 class="title">Sign up</h1>
-
-          <div class="inputContainer">
-            <input type="text" class="input">
-            <label for="" class="label">Full Name</label>
-          </div>
     
           <div class="inputContainer">
-            <input type="text" class="input">
+            <input type="text" class="input", id="email">
             <label for="" class="label">Email</label>
           </div>
 
@@ -29,13 +24,21 @@
           </div>
     
           <div class="inputContainer">
-            <input type="text" class="input">
+            <input type="text" class="input" id="username">
             <label for="" class="label">Username</label>
           </div>
 
           <div class="inputContainer">
             <input type="date" class="input" id="birthdate" name="birthdate" required>
             <label for="birthdate" class="label">Birthdate</label>
+          </div>
+
+          <div class="inputContainer">
+            <select id="role">
+              <option value="etudiant">Student</option>
+              <option value="prof">Professor</option>
+            </select>
+            <label for="role" class="label">Role</label>
           </div>
     
           <div class="inputContainer">

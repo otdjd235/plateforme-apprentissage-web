@@ -27,28 +27,3 @@ def cours():
 @app.route('/exercice')
 def exercice():
     return render_template('exercice.html')
-
-@app.route('/users')
-def users():
-    """Afficher tous les utilisateurs"""
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM users")
-    users = cursor.fetchall()
-    conn.close()
-    
-    return render_template('users.html', users=users)
-
-@app.route('/add_user', methods=['POST'])
-def add_user():
-    """Ajouter un utilisateur via un formulaire"""
-    username = request.form['username']
-    email = request.form['email']
-    
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("INSERT INTO users (username, email) VALUES (%s, %s)", (username, email))
-    conn.commit()
-    conn.close()
-    
-    return redirect(url_for('users'))
