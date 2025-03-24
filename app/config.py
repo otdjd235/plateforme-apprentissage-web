@@ -8,3 +8,4 @@ class Config:
     DB_PASSWORD = os.getenv("DATABASE_PASSWORD")
     DB_HOST = os.getenv("DATABASE_HOST")
     DB_NAME = os.getenv("DATABASE_NAME")
+    SECRET_KEY = os.getenv("SECRET_KEY")

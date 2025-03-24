@@ -10,12 +10,12 @@
 </head>
 <body>
     <div class="signupFrm">
-        <form id="signup-form" action="/signup" method='POST' class="form">
+        <form id="signup-form" class="form">
           <h1 class="title">Sign up</h1>
     
           <div class="inputContainer">
-            <input type="text" class="input", id="email">
-            <label for="" class="label">Email</label>
+            <input type="text" class="input" id="email" name="email">
+            <label for="email" class="label">Email</label>
           </div>
 
           <div class="inputContainer">
@@ -24,8 +24,8 @@
           </div>
     
           <div class="inputContainer">
-            <input type="text" class="input" id="username">
-            <label for="" class="label">Username</label>
+            <input type="text" class="input" id="username", name="username">
+            <label for="username" class="label">Username</label>
           </div>
 
           <div class="inputContainer">
@@ -34,7 +34,7 @@
           </div>
 
           <div class="inputContainer">
-            <select id="role">
+            <select id="role" name="role">
               <option value="etudiant">Student</option>
               <option value="prof">Professor</option>
             </select>
@@ -43,12 +43,12 @@
     
           <div class="inputContainer">
             <input type="password" class="input" name="password" id="password" onkeyup='check();'>
-            <label for="" class="label">Password</label>
+            <label for="password" class="label">Password</label>
           </div>
     
           <div class="inputContainer">
             <input type="password" class="input" name="confirm_password" id="confirm_password" onkeyup='check();'>
-            <label for="" class="label">Confirm Password</label>
+            <label for="confirm_password" class="label">Confirm Password</label>
           </div>
           <span id="message"></span>
 
@@ -71,12 +71,105 @@
     }
 
     function goBack() {
-        if (document.referrer !== "") {
-            window.history.back(); // Go back if there's a previous page
-        } else {
-            window.location.href = "{{ url_for('home') }}";
-        }
+      window.location.href = "{{ url_for('home') }}";
     }
+
+    const form = document.getElementById('signup-form')
+    const email_input = document.getElementById('email')
+    const phone_input = document.getElementById('phone')
+    const username_input = document.getElementById('username')
+    const birthdate_input = document.getElementById('birthdate')
+    const role_input = document.getElementById('role')
+    const password_input = document.getElementById('password')
+    const confirm_password_input = document.getElementById('confirm_password')
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();  // ALWAYS prevent the default
+      console.log('Submit pressed');
+
+      document.querySelectorAll('.incorrect').forEach(el => el.classList.remove('incorrect'));
+
+      const errors = getSignUpFormErrors(
+        email_input, phone_input, username_input, 
+        birthdate_input, role_input, password_input, confirm_password_input
+      );
+
+      if (errors.length > 0) {
+        return;
+      }
+
+      const data = {
+        email: email_input.value,
+        tel: phone_input.value,
+        username: username_input.value,
+        date_naissance: birthdate_input.value,
+        role: role_input.value,
+        mot_de_passe: password_input.value,
+      };
+
+      fetch('/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+        .then(res => res.json())
+        .then(response => {
+          console.log('Response from server', response);
+          if (response.id) {
+            alert('Account created!');
+            console.log("Redirecting to login");
+            window.location.href = "/login";
+          } else {
+            alert('Error: ' + response.error);
+          }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    function getSignUpFormErrors(email, phone, username, birthdate, role, password, confirm_password) {
+      let errors = [];
+
+      if (email.value.trim() === '') {
+        errors.push('Email is required');
+        email.parentElement.classList.add('incorrect');
+      }
+
+      const phonePattern = /^\d{3}-\d{3}-\d{4}$/;
+      if (phone.value.trim() === '' || !phonePattern.test(phone.value.trim())) {
+        errors.push('Invalid phone number');
+        phone.parentElement.classList.add('incorrect');
+      }
+
+      if (username.value.trim() === '') {
+        errors.push('Username is required');
+        username.parentElement.classList.add('incorrect');
+      }
+
+      if (birthdate.value.trim() === '') {
+        errors.push('Birthdate is required');
+        birthdate.parentElement.classList.add('incorrect');
+      }
+
+      if (role.value.trim() === '') {
+        errors.push('Role is required');
+        role.parentElement.classList.add('incorrect');
+      }
+
+      if (password.value.trim() === '' || password.value.length < 6) {
+        errors.push('Password must be at least 6 characters long');
+        password.parentElement.classList.add('incorrect');
+      }
+
+      if (password.value !== confirm_password.value) {
+        errors.push("Passwords don't match");
+        confirm_password.parentElement.classList.add('incorrect');
+      }
+
+      return errors;
+    }
+
 </script>
 </body>
 </html>

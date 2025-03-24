@@ -1,18 +1,36 @@
 from flask import render_template, request, redirect, url_for
 from app import app
 from app.db import get_db_connection
+from flask import session
+
+@app.context_processor
+def user_status():
+    return {
+        'user_logged_in': 'user_id' in session,
+        'session_user': session
+    }
 
 @app.route('/')
 def home():
-    user_logged_in = True
-    return render_template('index.html', user_logged_in = user_logged_in)
+    return render_template('index.html')
     
 @app.route('/profile')
 def profile():
-    return render_template('profile.html')
+    if 'user_id' not in session:
+        return redirect(url_for('login_api'))
+
+    user_data = {
+        'username': session.get('username'),
+        'email': session.get('email'),
+        'tel': session.get('tel'),
+        'date_naissance': session.get('date_naissance'),
+        'role': session.get('role')
+    }
+
+    return render_template('profile.html', user=user_data)
 
 @app.route('/login')
-def login():
+def login_api():
     return render_template('login.html')
 
 @app.route('/signup')
@@ -22,8 +40,13 @@ def signup():
 @app.route('/cours')
 def cours():
     user_logged_in = True
-    return render_template('cours.html', user_logged_in = user_logged_in)
+    return render_template('cours.html')
 
 @app.route('/exercice')
 def exercice():
     return render_template('exercice.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('home'))
