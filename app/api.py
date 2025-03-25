@@ -167,3 +167,27 @@ def get_cours_chapitres(cours_id):
     cursor.close()
     connection.close()
     return jsonify(chapitres)
+
+@app.route('/chapitres/<int:chapitre_id>/video', methods=['GET'])
+def get_chapitres_video(chapitre_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary = True)
+
+    cursor.execute("SELECT * FROM chapitres WHERE id_chap = %s", (chapitre_id,))
+    chapitre = cursor.fetchone()
+
+    if not chapitre:
+        cursor.close()
+        connection.close()
+        return jsonify({'error' : 'Chapitre not found'}), 404
+
+    cursor.execute("SELECT * FROM videoscours WHERE id_chap = %s", (chapitre_id,))
+
+    video = cursor.fetchone()
+    cursor.close()
+    connection.close()
+
+    if video:
+        return jsonify(video)
+    else:
+        return jsonify({ 'error': 'Video not found'}), 404
