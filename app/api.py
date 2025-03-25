@@ -148,3 +148,22 @@ def sign_up():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/cours/<int:cours_id>/chapitres', methods=['GET'])
+def get_cours_chapitres(cours_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary = True)
+
+    cursor.execute("SELECT * FROM cours WHERE id_cours = %s", (cours_id,))
+    cours = cursor.fetchone()
+
+    if not cours:
+        cursor.close()
+        connection.close()
+        return jsonify({'error' : 'Cours not found'}), 404
+
+    cursor.execute("SELECT * FROM chapitres WHERE id_cours = %s ORDER BY ordre ASC", (cours_id,))
+
+    chapitres = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return jsonify(chapitres)
