@@ -5,6 +5,32 @@ from app.db import get_db_connection
 from werkzeug.security import generate_password_hash, check_password_hash
 from mysql.connector import IntegrityError
 
+@app.route('/api/cours', methods=['GET'])
+def get_cours():
+    page = int(request.args.get('page', 1))
+    cours_per_page = int(request.args.get('cours_per_page', 10))
+    
+    offset = (page - 1) * cours_per_page #Indique a quel item commencer pour les afficher
+
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary = True)
+
+    cursor.execute(" SELECT * FROM cours LIMIT %s OFFSET %s", (cours_per_page, offset))
+    cours = cursor.fetchall()
+
+    cursor.execute("SELECT COUNT(*) as total from cours")
+    total = cursor.fetchone()['total']
+
+    cursor.close()
+    connection.close()
+
+    return jsonify({
+        'page': page,
+        'cours_per_page' : cours_per_page,
+        'cours_total' : total,
+        'data' : cours
+    }), 200
+
 @app.route('/cours/<int:cours_id>/chapitres', methods=['GET'])
 def get_cours_chapitres(cours_id):
     connection = get_db_connection()
