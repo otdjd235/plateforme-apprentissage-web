@@ -9,5 +9,6 @@ app.config.from_object(Config)
 
 # Import routes
 from app import routes
-from app import api
+from app import user_routes
+from app import cours_routes
 
