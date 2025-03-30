@@ -41,10 +41,13 @@ mysql -u root -p
 Le projet utilise un fichier `.env` pour stocker les variables sensibles. Créez un fichier `.env` à la racine du projet et ajoutez :
 
 ```ini
-DATABASE_USER=root
-DATABASE_PASSWORD=your_password
-DATABASE_HOST=localhost
-DATABASE_NAME=your_database
+FLASK_APP=run.py
+FLASK_ENV=development
+DB_USER=root
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_NAME=your_database
+SECRET_KEY=my_very_secret_key_123
 ```
 
 Remplacez `your_password` et `your_database` par vos informations réelles.
@@ -70,13 +73,13 @@ Remplacez `your_password` et `your_database` par vos informations réelles.
 Une fois la base de données créée, appliquez les migrations existantes :
 
 ```sh
-./apply_migrations.sh   # (Git Bash/Linux/macOS)
+./database/apply_migrations.sh   # (Git Bash/Linux/macOS)
 ```
 
 ou, si vous utilisez Windows PowerShell :
 
 ```powershell
-./apply_migrations.ps1
+./database/apply_migrations.ps1
 ```
 
 Cela exécutera tous les fichiers `.sql` du dossier `database/` pour initialiser la base de données.

@@ -6,7 +6,6 @@
     <div class="container1">
         <h1>Liste des Cours</h1>
 
-        <!-- Barre de recherche et filtres -->
         <div class="filters">
             <input type="text" id="search" placeholder="Rechercher un cours...">
             
@@ -25,58 +24,39 @@
             </select>
         </div>
 
-        <!-- Cours -->
         <div class="courses">
-            <div class="course-grid">
-                <div class="course-card">
-                    <strong>Introduction à la programmation</strong>  
-                    <p>Les bases de Python.</p>
-                    <span class="discipline">Discipline : Informatique</span>
-                    <span class="duration">Durée : 10 semaines</span>
-                </div>
-                <div class="course-card">
-                    <strong>Structures de données et algorithmes</strong>  
-                    <p>Comprendre et implémenter des structures de données classiques.</p>
-                    <span class="discipline">Discipline : Informatique</span>
-                    <span class="duration">Durée : 12 semaines</span>
-                </div>
-                <div class="course-card">
-                    <strong>Fondements des réseaux</strong>  
-                    <p>Principes fondamentaux des réseaux informatiques.</p>
-                    <span class="discipline">Discipline : Réseaux</span>
-                    <span class="duration">Durée : 8 semaines</span>
-                </div>
-                <div class="course-card">
-                    <strong>Sécurité des réseaux</strong>  
-                    <p>Protection et sécurisation des infrastructures réseau.</p>
-                    <span class="discipline">Discipline : Réseaux</span>
-                    <span class="duration">Durée : 10 semaines</span>
-                </div>
-                <div class="course-card">
-                    <strong>Cybersécurité et gestion des risques</strong>  
-                    <p>Concepts de cybersécurité et gestion des menaces.</p>
-                    <span class="discipline">Discipline : Sécurité</span>
-                    <span class="duration">Durée : 12 semaines</span>
-                </div>
-                <div class="course-card">
-                    <strong>Cryptographie appliquée</strong>  
-                    <p>Principes de la cryptographie et applications en sécurité.</p>
-                    <span class="discipline">Discipline : Sécurité</span>
-                    <span class="duration">Durée : 9 semaines</span>
-                </div>
-                <div class="course-card">
-                    <strong>Gestion de bases de données</strong>  
-                    <p>Conception et optimisation des bases de données relationnelles.</p>
-                    <span class="discipline">Discipline : Bases de données</span>
-                    <span class="duration">Durée : 11 semaines</span>
-                </div>
-                <div class="course-card">
-                    <strong>Big Data et analyse de données</strong>  
-                    <p>Introduction aux technologies de gestion et d'analyse de Big Data.</p>
-                    <span class="discipline">Discipline : Bases de données</span>
-                    <span class="duration">Durée : 13 semaines</span>
-                </div>
+            <div class="course-grid" id="course-list">
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const courseListElement = document.getElementById("course-list");
+            const apiUrl = "/api/cours?page=1&cours_per_page=10"; // Modifier pour changer nombre de cours par page
+
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    const courses = data.data;
+
+                    courses.forEach(course => {
+                        const courseCard = document.createElement('div');
+                        courseCard.classList.add('course-card');
+                        
+                        courseCard.innerHTML = `
+                            <strong>${course.nom_cours}</strong>
+                            <p>${course.description_courte}</p>
+                            <span class="discipline">Discipline : ${course.id_domaine}</span>
+                            <span class="duration">Durée : ${course.duree_totale} minutes</span>
+                        `;
+                        
+                        courseListElement.appendChild(courseCard);
+                    });
+                })
+                .catch(error => {
+                    console.error("Erreur lors de la récupération des cours:", error);
+                });
+        });
+    </script>
 {% endblock %}

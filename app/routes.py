@@ -12,7 +12,16 @@ def user_status():
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute('SELECT * FROM cours')
+    cours = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return render_template('index.html', cours=cours)
     
 @app.route('/profile')
 def profile():
