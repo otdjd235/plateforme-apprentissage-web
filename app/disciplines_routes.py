@@ -44,4 +44,3 @@ def get_cours_by_discipline(id_discipline):
         'discipline': discipline,
         'cours': cours
     }), 200
-

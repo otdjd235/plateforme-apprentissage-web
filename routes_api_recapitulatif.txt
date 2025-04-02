@@ -1,0 +1,94 @@
+
+#  Récapitulatif des Routes Flask définies dans le projet crées jusqu'à date
+
+## 1. Cours: cours_routes.py
+
+- `GET /api/cours`  
+  ➤ Récupère tous les cours disponibles avec pagination (params : page, cours_per_page).
+
+- `GET /cours/<cours_id>/chapitres`  
+  ➤ Récupère les chapitres d’un cours donné.
+
+
+
+## 2. Disciplines: disciplines_routes.py
+
+- `GET /api/disciplines`  
+  ➤ Récupère toutes les disciplines disponibles.
+
+- `GET /discipline/<id_discipline>/cours`  
+  ➤ Récupère tous les cours liés à une discipline.
+
+
+
+## 3.  Suivre un cours: suivre_routes.py
+
+- `POST /suivre`  
+  ➤ Permet à un utilisateur de suivre un cours (ajout dans `suivre`).
+
+- `GET /user/<id_user>/suivre`  
+  ➤ Récupère tous les cours suivis par un utilisateur.
+
+
+
+## 4.  Vidéos: videos_routes.py
+
+- `GET /chapitres/<chapitre_id>/video`  
+  ➤ Récupère la vidéo associée à un chapitre.
+
+- `POST /video_complete`  
+  ➤ Marque une vidéo comme terminée par un utilisateur (insertion dans `videos_complete`).
+
+- `GET /videos_complete/<int:id_user>`  
+  ➤ Récupère toutes les vidéos complétées par un utilisateur.
+
+- `POST /video_complete/check  
+  ➤Verifier si une video est terminee par un utilisateur.
+
+## 5.  Progression: progression_routes.py
+
+- `GET /user/<id_user>/progression`  
+  ➤ Récupère la progression de l’utilisateur dans tous les cours suivis.
+
+
+
+## 6.  Exercices: exercices_routes.py
+
+- `GET /chapitre/<id_chap>/exercices`  
+  ➤ Récupère tous les exercices d’un chapitre.
+
+- `POST /exercice_complete`  
+  ➤ Marque un exercice comme complété par l’utilisateur.
+
+- `GET /user/<id_user>/exercices_complete`  
+  ➤ Récupère les exercices complétés par un utilisateur.
+
+- `GET /exercices_complete/<int:id_user>/<int:id_exo>`  
+  ➤ Pour verifier si un exercice a été fait.
+
+
+
+
+## 7.  Certifications: certifications_routes.py
+
+- `GET /user/<id_user>/certifications`  
+  ➤ Récupère la liste des certifications obtenues par un utilisateur (cours complétés).
+
+---
+
+## 8. Users: users_routes.py
+
+- POST /signup 
+  ➤ Crée un utilisateur et l'ajoute à la table selon son rôle
+
+- POST /login 
+  ➤ Authentifie un utilisateur et stocke ses infos en session
+
+- GET /users 
+  ➤ Liste tous les utilisateurs
+
+- GET /users/<user_id>
+  ➤ Donne les infos d’un utilisateur spécifique
+
+- DELETE /users/<user_id>
+  ➤ Supprime un utilisateur s’il existe

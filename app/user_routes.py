@@ -125,6 +125,17 @@ def sign_up():
         
         user_id = cursor.lastrowid
         
+        #AJOUT DU USER DANS SA TABLE CORRESPONDANTE EN FONCTION DE SON ROLE
+
+         # ✅ Insérer dans la table selon le rôle
+        if role == 'etudiant':
+            cursor.execute("INSERT INTO etudiants (id_user) VALUES (%s)", (user_id,))
+        elif role == 'prof':
+            cursor.execute("INSERT INTO professeur (id_prof) VALUES (%s)", (user_id,))
+        elif role == 'admin':
+            cursor.execute("INSERT INTO admins (id_user) VALUES (%s)", (user_id,))
+
+
         connection.commit()
         cursor.close()
         connection.close()
