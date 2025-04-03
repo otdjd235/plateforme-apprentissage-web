@@ -6,31 +6,25 @@ exercices_bp = Blueprint('exercices', __name__)
 
 # Récupérer tous les exercices d'un chapitre
 
-@exercices_bp.route('/chapitres/<int:id_chap>/exercices', methods=['GET'])
-def get_exercices_par_chapitre(id_chap):
-    connection = get_db_connection()
-    cursor = connection.cursor(dictionary=True)
+@exercices_bp.route('/chapitres/<int:chapitre_id>/exercices', methods=['GET'])
+def get_exercices_par_chapitre(chapitre_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
 
-    # Vérifier que le chapitre existe
-    cursor.execute("SELECT * FROM chapitres WHERE id_chap = %s", (id_chap,))
-    chapitre = cursor.fetchone()
+    cursor.execute("""
+        SELECT * FROM exercice WHERE id_chap = %s
+    """, (chapitre_id,))
 
-    if not chapitre:
-        cursor.close()
-        connection.close()
-        return jsonify({'error': 'Chapitre non trouvé'}), 404
-
-    # Récupérer les exercices liés au chapitre
-    cursor.execute("SELECT * FROM exercice WHERE id_chap = %s", (id_chap,))
     exercices = cursor.fetchall()
 
-    cursor.close()
-    connection.close()
+    # Supprimer la bonne réponse avant d'envoyer au frontend
+    for ex in exercices:
+        ex.pop('bonne_reponse', None)
 
-    if exercices:
-        return jsonify(exercices), 200
-    else:
-        return jsonify({'message': 'Aucun exercice trouvé pour ce chapitre'}), 200
+    cursor.close()
+    conn.close()
+    return jsonify(exercices), 200
+
 
 # marque un exercice comme completé
 
@@ -116,3 +110,53 @@ def check_exercice_complete(id_user, id_exo):
         return jsonify({'completed': True})
     else:
         return jsonify({'completed': False})
+
+# Soumettre une réponse à un exercice
+
+@exercices_bp.route('/repondre_exercice', methods=['POST'])
+def repondre_exercice():
+    data = request.get_json()
+    id_user = data.get('id_user') or session.get('user_id')
+    id_exercice = data.get('id_exo')
+    reponse_etudiant = data.get('reponse')  # Attendu : "A", "B", "C", "D"
+
+    if not all([id_user, id_exercice, reponse_etudiant]):
+        return jsonify({ 'error': 'Champs requis manquants' }), 400
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("SELECT * FROM exercice WHERE id_exo = %s", (id_exercice,))
+        exercice = cursor.fetchone()
+
+        if not exercice:
+            return jsonify({ 'error': 'Exercice introuvable' }), 404
+
+        # Traduire "A" → "choix_1", etc.
+        lettre_vers_choix = { "A": "choix_1", "B": "choix_2", "C": "choix_3", "D": "choix_4" }
+        reponse_convertie = lettre_vers_choix.get(reponse_etudiant.upper())
+
+        if not reponse_convertie:
+            return jsonify({ 'error': 'Réponse invalide. Choisissez A, B, C ou D.' }), 400
+
+        est_correct = (reponse_convertie == exercice['bonne_reponse'])
+
+        # Marquer comme complété
+        cursor.execute("""
+            INSERT IGNORE INTO exercices_complete (id_user, id_exo)
+            VALUES (%s, %s)
+        """, (id_user, id_exercice))
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        # Retourner 1/1 ou 0/1
+        return jsonify({
+            'resultat': '1/1' if est_correct else '0/1',
+            'bonne_reponse': exercice[exercice['bonne_reponse']]  # Affiche le texte du bon choix
+        }), 200
+
+    except Exception as e:
+        return jsonify({ 'error': str(e) }), 500

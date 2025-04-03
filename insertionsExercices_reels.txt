@@ -1,0 +1,155 @@
+-- Exercices pour la discipline : Informatique
+-- Cours 1 : Introduction à la programmation (id_cours = 1)
+-- ===============================
+
+-- Chapitre 1 : Variables et types de données (id_chap = 1)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(1, 'Quel type de données est retourné par la fonction input() en Python ?', 
+ 'int', 'float', 'string', 'bool', 'choix_3');
+
+-- Chapitre 2 : Structures de contrôle (id_chap = 2)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(2, 'Que fait l'instruction if x > 5: en Python ?', 
+ 'Elle compare si x est supérieur ou égal à 5', 
+ 'Elle exécute un bloc si x est inférieur à 5', 
+ 'Elle vérifie si x est égal à 5', 
+ 'Elle exécute un bloc si x est strictement supérieur à 5', 
+ 'choix_4');
+
+-- Chapitre 3 : Fonctions (id_chap = 3)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(3, 'Quelle est la bonne syntaxe pour définir une fonction en Python ?', 
+ 'fonction maFonction():', 'function maFonction()', 'def maFonction():', 'create maFonction()', 'choix_3');
+
+-- ===============================
+-- Cours 2 : Algorithmique et structures de données (id_cours = 2)
+-- ===============================
+-- Chap 1: Algorithmes de tri
+INSERT INTO exercice (id_exo, id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (10, 4, "Quel est l’algorithme de tri le plus rapide en moyenne ?", "Tri à bulles", "Tri insertion", "Tri rapide", "Tri fusion", "choix_3");
+-- Chap 2: Listes chaînée
+INSERT INTO exercice (id_exo, id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+(11, 5, "Quelle structure permet un accès en O(1) pour insérer en tête ?", "Liste simple", "Liste doublement chaînée", "Pile", "File", "choix_2");
+-- Chap 3: Piles et files
+INSERT INTO exercice (id_exo, id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (12, 6, "Quelle est la structure idéale pour un traitement FIFO ?", "Pile", "Arbre binaire", "Liste chaînée", "File", "choix_4");
+
+-- ===============================
+-- Exercices pour la discipline : Sécurité
+-- Cours 1 : Introduction à la cybersécurité (id_cours = 3)
+-- ===============================
+
+-- Chapitre 1 : Principes de base de la sécurité (id_chap = 7)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(7, 'Quel est l'objectif principal de la cybersécurité ?', 
+ 'Assurer le bon fonctionnement d'Internet', 
+ 'Protéger les systèmes et les données', 
+ 'Empêcher les utilisateurs d'accéder au réseau', 
+ 'Créer des logiciels antivirus', 
+ 'choix_2');
+
+-- Chapitre 2 : Menaces courantes (id_chap = 8)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(8, 'Qu'est-ce qu'un ransomware ?', 
+ 'Un logiciel malveillant qui crypte les fichiers et demande une rançon', 
+ 'Un antivirus puissant', 
+ 'Un type de pare-feu', 
+ 'Une technique de piratage réseau', 
+ 'choix_1');
+
+-- Chapitre 3 : Gestion des accès (id_chap = 9)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(9, 'Quelle méthode est la plus utilisée pour vérifier l'identité d'un utilisateur ?', 
+ 'Reconnaissance faciale', 'Mot de passe', 'Empreinte digitale', 'Code PIN', 'choix_2');
+
+-- ===============================
+-- Cours 2 : Sécurité des systèmes et réseaux (id_cours = 4)
+-- ===============================
+-- Chap 1: Pare-feux et antivirus
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (10, "Quel est le rôle principal d’un pare-feu ?", "Créer des sauvegardes", "Contrôler le trafic réseau", "Crypter les données", "Analyser les logs", "choix_2");
+
+-- Chap 2: Sécurité réseau
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (11, "Quel protocole sécurise les communications réseau ?", "HTTP", "FTP", "SSH", "IP", "choix_3");
+
+-- Chap 3: Gestion des accès
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (12, "Qu’est-ce que l’authentification à deux facteurs ?", "Une méthode de backup", "Un type de virus", "Une technique de piratage", "Une méthode de sécurité avec deux étapes", "choix_4");
+
+-- ===============================
+-- Exercices pour la discipline : Réseau
+-- Cours 1 : Réseaux informatiques I (id_cours = 5)
+-- ===============================
+
+-- Chapitre 1 : Composants d’un réseau (id_chap = 13)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(13, 'Quel équipement permet de connecter plusieurs appareils dans un réseau local ?', 
+ 'Un routeur', 'Un modem', 'Un switch', 'Un câble Ethernet', 'choix_3');
+
+-- Chapitre 2 : Adressage IP (id_chap = 14)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(14, 'Combien d'adresses différentes peut contenir une adresse IPv4 ?', 
+ '2^16', '2^32', '2^64', '2^8', 'choix_2');
+
+-- Chapitre 3 : Protocoles de communication (id_chap = 15)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(15, 'Quel protocole est utilisé pour envoyer des pages web ?', 
+ 'FTP', 'SMTP', 'HTTP', 'DNS', 'choix_3');
+
+-- ===============================
+-- Cours 2 : Configuration des routeurs et commutateurs (id_cours = 6)
+-- ===============================
+-- Chap 1: Introduction à Cisco
+INSERT INTO exercice ( id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (16,"Quel constructeur est célèbre pour ses équipements réseaux ?", "Samsung", "Microsoft", "Cisco", "Google", "choix_3");
+
+-- Chap 2: Configuration de base
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (17,"Quel composant est nécessaire pour configurer un réseau ?", "Processeur", "Disque dur", "Routeur", "Carte graphique", "choix_3");
+
+-- Chap 3: Routage statique et dynamique
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (18,"Le routage dynamique utilise :", "Des chemins fixes", "Un tableau statique", "Des protocoles pour adapter le chemin", "Des câbles directs", "choix_3");
+
+-- ===============================
+-- Exercices pour la discipline : Bases de données
+-- Cours 1 : SQL et conception de base de données (id_cours = 7)
+-- ===============================
+
+-- Chapitre 1 : Modèle relationnel (id_chap = 10)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(19, 'Quel est l'élément principal dans un modèle relationnel ?', 
+ 'La fonction', 'La procédure', 'La table', 'La colonne', 'choix_3');
+
+-- Chapitre 2 : Langage SQL (id_chap = 20)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(20, 'Quelle commande SQL permet de récupérer des données ?', 
+ 'UPDATE', 'SELECT', 'INSERT', 'DELETE', 'choix_2');
+
+-- Chapitre 3 : Clés primaires et étrangères (id_chap = 21)
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(21, 'À quoi sert une clé étrangère ?', 
+ 'À identifier de manière unique une ligne', 
+ 'À relier deux tables entre elles', 
+ 'À trier les données', 
+ 'À calculer des sommes', 
+ 'choix_2');
+
+-- ===============================
+-- Cours 2 : Configuration des routeurs et commutateurs (id_cours = 6)
+-- ===============================
+
+-- Chap 1: Bases de données relationnelles
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (22, "Quelle commande SQL sert à ajouter un utilisateur ?", "CREATE USER", "GRANT", "INSERT", "ALTER", "choix_1");
+
+-- Chap 2: Requêtes SQL de base
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (23, "Pourquoi faire une sauvegarde d’une base de données ?", "Pour supprimer les données", "Pour économiser de l’espace", "Pour restaurer en cas de problème", "Pour changer le mot de passe", "choix_3");
+
+-- Chap 3: Jointures et sous-requêtes
+INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
+VALUES (24, "Quelle commande permet d'analyser les performances d'une requête ?", "EXPLAIN", "SHOW TABLES", "INSERT", "GRANT", "choix_1");
+
+
