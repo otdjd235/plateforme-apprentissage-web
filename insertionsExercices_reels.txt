@@ -152,4 +152,27 @@ VALUES (23, "Pourquoi faire une sauvegarde d’une base de données ?", "Pour su
 INSERT INTO exercice (id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse)
 VALUES (24, "Quelle commande permet d'analyser les performances d'une requête ?", "EXPLAIN", "SHOW TABLES", "INSERT", "GRANT", "choix_1");
 
+ON A AJOUTER DES EXOS DE CHAP 25 A 45
 
+INSERT INTO exercice (id_exo, id_chap, enonce, choix_1, choix_2, choix_3, choix_4, bonne_reponse) VALUES
+(25, 25, "Quel est le principal avantage de la programmation orientée objet (POO) ?", "Réduction du code source", "Meilleure organisation et réutilisabilité du code", "Amélioration des performances", "Moins de lignes de code à écrire", "choix_2"),
+(26, 26, "En POO, que représente une classe ?", "Une instance d’un objet", "Un type de boucle", "Un modèle définissant des objets", "Un élément HTML", "choix_3"),
+(27, 27, "Le polymorphisme permet :", "De stocker plusieurs objets dans un tableau", "D’utiliser différentes implémentations d’une même méthode", "De compiler plus vite", "D’éviter l’héritage", "choix_2"),
+(28, 28, "Quel élément HTML définit le contenu principal d’une page ?", "<main>", "<div>", "<section>", "<article>", "choix_1"),
+(29, 29, "Quelle propriété CSS permet de changer la couleur du texte ?", "background-color", "font-weight", "color", "text-align", "choix_3"),
+(30, 30, "Quelle méthode JavaScript est utilisée pour réagir à un clic utilisateur ?", "addStyle()", "click()", "addEventListener()", "onclickAlert()", "choix_3"),
+(31, 31, "Quelle est une vulnérabilité courante des sites web ?", "Injection SQL", "Erreurs de typage", "Lenteur du serveur", "Manque de support mobile", "choix_1"),
+(32, 32, "Comment se protéger contre les attaques CSRF ?", "Utiliser HTTPS uniquement", "Utiliser des tokens anti-CSRF", "Compresser les pages", "Optimiser le CSS", "choix_2"),
+(33, 33, "Quelle pratique est recommandée pour stocker les mots de passe ?", "Stockage en clair", "Encodage en base64", "Hachage avec salage", "Compression des mots de passe", "choix_3"),
+(34, 34, "Quelle est la première étape d’un test d’intrusion (pentest) ?", "Exploitation", "Rapport", "Reconnaissance", "Nettoyage", "choix_3"),
+(35, 35, "Quel outil est couramment utilisé pour les scans de vulnérabilités ?", "Wireshark", "Metasploit", "Burp Suite", "Nmap", "choix_4"),
+(36, 36, "Que doit contenir un rapport de pentest ?", "La date de naissance de l’analyste", "Des captures d’écran inutiles", "Des preuves claires et des recommandations", "Une copie de la base de données", "choix_3"),
+(37, 37, "Quelle technologie est souvent utilisée pour les connexions sans fil ?", "Bluetooth", "Wi-Fi", "Zigbee", "NFC", "choix_2"),
+(38, 38, "Quel est un bon moyen de sécuriser un réseau Wi-Fi ?", "Désactiver le SSID", "Utiliser WPA3", "Changer la couleur du routeur", "Ajouter un fond d’écran", "choix_2"),
+(39, 39, "Que signifie ‘déploiement’ dans le contexte réseau ?", "Configurer les pare-feu", "Installer et rendre opérationnel un système", "Créer une base de données", "Changer d’adresse IP", "choix_2"),
+(40, 40, "Quel est un avantage de la virtualisation ?", "Plus de câbles nécessaires", "Moins de sécurité", "Optimisation des ressources physiques", "Incompatibilité logicielle", "choix_3"),
+(41, 41, "À quoi servent les VLAN ?", "Accélérer les disques durs", "Partager un écran", "Segmenter logiquement un réseau", "Changer la langue système", "choix_3"),
+(42, 42, "Qu’est-ce que le SDN ?", "Un protocole Wi-Fi", "Une méthode de routage manuel", "Un concept de virtualisation avancée", "Un câble spécial", "choix_3"),
+(43, 43, "Quel est un avantage majeur de la sécurité Cloud ?", "Accès limité uniquement en local", "Pas de sauvegardes", "Gestion centralisée de la sécurité", "Incompatibilité mobile", "choix_3"),
+(44, 44, "Quel principe permet de limiter les droits d’un utilisateur à ce qui est strictement nécessaire ?", "Single Sign-On", "Règle du moindre privilège", "Double authentification", "Cloud Lock", "choix_2"),
+(45, 45, "Quel est le rôle du chiffrement dans la sécurité ?", "Ralentir le système", "Créer une copie de secours", "Empêcher l’accès non autorisé aux données", "Changer l’adresse IP", "choix_3");

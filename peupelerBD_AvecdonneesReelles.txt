@@ -106,3 +106,46 @@ INSERT INTO chapitres (id_chap, titre_chap, ordre, id_cours) VALUES (23, 'Sauveg
 INSERT INTO videoscours (id_vid,id_chap, titre, url_video, duree, id_cours) VALUES (23, 23,'Sauvegardes et restaurations', 'https://www.youtube.com/watch?v=23ggAsmgAPE', 17, 8);
 INSERT INTO chapitres (id_chap, titre_chap, ordre, id_cours) VALUES (24, 'Optimisation des requêtes', 3, 8);
 INSERT INTO videoscours (id_vid,id_chap, titre, url_video, duree, id_cours) VALUES (24, 24, 'Optimisation des requêtes', 'https://www.youtube.com/watch?v=Z6sRptPPxzA', 95, 8);
+
+
+
+ON A COMPLETER EN AJOUTANT 7 COURS POUR UN TOTAL DE 15 COURS
+
+LES REQUETES POUR LAJOUT DES VIDEOSCOURS : ON A TOUJOURS UNE VIDEO PAR CHAPITRES DE COURS , SACHANT QUON A TROIS CHAPITRES PAR COURS:
+
+INSERT INTO videoscours (id_chap, titre, url_video, id_cours) VALUES
+-- Cours 9 : Réseaux avancés (chapitres 25, 26, 27,9)
+(25, 'Comprendre les réseaux cellulaires', 'https://www.youtube.com/watch?v=L4bs_w9gJMw&list=PLjXls-kqM6JBzfMz01xULvDV8km7rB9Fx', 9),
+(26, 'Le Wi-Fi expliqué simplement', 'https://www.youtube.com/watch?v=LsyfJc83SQo&t=105s',9),
+(27, 'Les satellites de communication', 'https://www.youtube.com/watch?v=-zWE_n4-TdI',9),
+
+-- Cours 10 : Sécurité réseau (chapitres 28, 29, 30,10)
+(28, 'Protocoles de sécurité sur le web', 'https://www.youtube.com/watch?v=Ds7TvEvM9z4',10),
+(29, 'Fonctionnement des VPNs', 'https://www.youtube.com/watch?v=2B2cjGC4834',10),
+(30, 'La sécurité dans le cloud', 'https://www.youtube.com/watch?v=6-S1Bu0N2IA',10),
+
+-- Cours 11 : Développement web (chapitres 31, 32, 33, 11)
+(31, 'Introduction à HTML', 'https://www.youtube.com/watch?v=ok-plXXHlWw',11),
+(32, 'Bases du CSS', 'https://www.youtube.com/watch?v=1Rs2ND1ryYc',11),
+(33, 'Les premiers pas avec JavaScript', 'https://www.youtube.com/watch?v=jS4aFq5-91M',11),
+
+-- Cours 12 : Python ludique (chapitres 34, 35, 36, 12)
+(34, 'Apprendre Python avec Turtle', 'https://www.youtube.com/watch?v=2W6uaSfBmco',12),
+(35, 'Créer un jeu simple en Python', 'https://www.youtube.com/watch?v=8ext9G7xspg',12),
+(36, 'Projet Python : pendu graphique', 'https://www.youtube.com/watch?v=RMAbsaS8A40',12),
+
+-- Cours 13 : SQL avancé (chapitres 37, 38, 39, 13)
+(37, 'Introduction à SQL', 'https://www.youtube.com/watch?v=HXV3zeQKqGY',13),
+(38, 'SQL avancé : les fonctions', 'https://www.youtube.com/watch?v=nNrgRVIzeHg',13),
+(39, 'Création de schémas relationnels', 'https://www.youtube.com/watch?v=wR0jg0eQsZA',13),
+
+-- Cours 14 : Administration SQL (chapitres 40, 41, 42, 14)
+(40, 'Comprendre les indexes en SQL', 'https://www.youtube.com/watch?v=BqmaDUumoxk',14),
+(41, 'Triggers et procédures stockées', 'https://www.youtube.com/watch?v=9WgLpEa8U-0',14),
+(42, 'Sécurité et permissions en SQL', 'https://www.youtube.com/watch?v=VlF-XG1vVPU',14),
+
+-- Cours 15 : Culture informatique (chapitres 43, 44, 45, 15)
+(43, 'Histoire de l’informatique', 'https://www.youtube.com/watch?v=B1QD9FgCOrc',15),
+(44, 'Les pionniers de la tech', 'https://www.youtube.com/watch?v=0HC6G_ozrQk',15),
+(45, 'Impact sociétal de l’informatique', 'https://www.youtube.com/watch?v=h8GKlP7Klb8',15);
+
