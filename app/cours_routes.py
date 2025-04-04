@@ -5,6 +5,22 @@ from app.db import get_db_connection
 from werkzeug.security import generate_password_hash, check_password_hash
 from mysql.connector import IntegrityError
 
+@app.route('/api/cours/<int:cours_id>', methods=['GET'])
+def get_cours_by_id(cours_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary = True)
+
+    cursor.execute("SELECT * FROM cours WHERE id_cours = %s", (cours_id,))
+        
+    cours = cursor.fetchone();
+    cursor.close()
+    connection.close()
+
+    if cours:
+        return jsonify(cours)
+    else:
+        return jsonify({'error' : 'Cours not found'}), 404
+        
 @app.route('/api/cours', methods=['GET'])
 def get_cours():
     page = int(request.args.get('page', 1))
@@ -32,7 +48,7 @@ def get_cours():
     }), 200
 
 @app.route('/cours/<int:cours_id>/chapitres', methods=['GET'])
-def get_cours_chapitres(cours_id):
+def get_cours_chapitres_api(cours_id):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary = True)
 
@@ -49,4 +65,32 @@ def get_cours_chapitres(cours_id):
     chapitres = cursor.fetchall()
     cursor.close()
     connection.close()
-    return jsonify(chapitres), 200 
+    return jsonify(chapitres), 200
+
+
+def get_cours_chapitres(cours_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary = True)
+
+    cursor.execute("SELECT * FROM chapitres WHERE id_cours = %s ORDER BY ordre ASC", (cours_id,))
+    chapitres = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+    
+    return chapitres
+
+def get_videos_chapitres(id_chap):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary = True)
+
+    cursor.execute("SELECT * FROM videoscours WHERE id_chap = %s", (id_chap,))
+    video = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+    
+    return video
+
+
+

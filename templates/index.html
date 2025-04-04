@@ -75,15 +75,17 @@
                     courseCard.classList.add('course-card');
 
                     courseCard.innerHTML = `
-                        <div class="course-content">
-                            <strong>${course.nom_cours}</strong>
-                            <p>${course.description_courte}</p>
-                            <span class="discipline">Discipline : ${course.id_domaine}</span>
-                            <span class="duration">Durée : ${course.duree_totale} minutes</span>
-                            <div class="favorite-container">
-                                <button class="favorite-btn" data-id="${course.id_cours}">&#9733;</button>
+                        <a href="/cours/${course.id_cours}" class="course-link">
+                            <div class="course-content">
+                                <strong>${course.nom_cours}</strong>
+                                <p>${course.description_courte}</p>
+                                <span class="discipline">Discipline : ${course.id_domaine}</span>
+                                <span class="duration">Durée : ${course.duree_totale} minutes</span>
+                                <div class="favorite-container">
+                                    <button class="favorite-btn" data-id="${course.id_cours}">&#9733;</button>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     `;
 
                     courseListElement.appendChild(courseCard);
@@ -95,6 +97,7 @@
             function addFavoriteButtonListeners() {
                 document.querySelectorAll(".favorite-btn").forEach(button => {
                     button.addEventListener("click", function() {
+                        event.stopPropagation();
                         this.classList.toggle("favorited");
                     });
                 });

@@ -238,3 +238,10 @@ input, select {
     color: white;
 }
 
+.course-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+

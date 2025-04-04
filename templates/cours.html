@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="container-cours">
-    <h1 class="text-3xl font-bold mb-4 mt-4">Python Basics Course</h1>
+    <h1 class="text-3xl font-bold mb-4 mt-4">{{ cours.nom_cours }}</h1>
 
     <div class="description-container">
         <div class="description-box">
@@ -24,21 +24,15 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        <a href="{{ url_for('exercice')}}" class="relative rounded-lg overflow-hidden shadow-lg h-64 cursor-pointer hover:scale-105 transition-transform bg-sky-500/100">
-            <div class="text-3xl p-4 text-white">Part 1</div>
-            <div class="text-xl p-6 text-white">Basics</div>
+        {% for chapitre in chapitres %}
+        <a href="{{ url_for('exercice', id_chap=chapitre.id_chap) }}"
+            class="relative rounded-lg overflow-hidden shadow-lg h-64 cursor-pointer hover:scale-105 transition-transform bg-sky-500/100">
+            <div class="text-3xl p-4 text-white">Chapitre {{ chapitre.ordre }}</div>
+            <div class="text-xl p-6 text-white">{{ chapitre.titre_chap }}</div>
         </a>
-    
-        <a href="{{ url_for('exercice')}}" class="relative rounded-lg overflow-hidden shadow-lg h-64 cursor-pointer hover:scale-105 transition-transform bg-sky-500/100">
-            <div class="text-3xl p-4 text-white">Part 2</div>
-            <div class="text-xl p-6 text-white">Inputs</div>
-        </a>
-    
-        <a href="{{ url_for('exercice')}}" class="relative rounded-lg overflow-hidden shadow-lg h-64 cursor-pointer hover:scale-105 transition-transform bg-sky-500/100">
-            <div class="text-3xl p-4 text-white">Part 3</div>
-            <div class="text-xl p-6 text-white">Variables</div>
-        </a>
+        {% endfor %}
     </div>
+
 
 </div>
 {% endblock %}

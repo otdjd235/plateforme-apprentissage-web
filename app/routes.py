@@ -2,6 +2,7 @@ from flask import render_template, request, redirect, url_for
 from app import app
 from app.db import get_db_connection
 from flask import session
+from app.cours_routes import get_cours_chapitres, get_videos_chapitres
 
 @app.context_processor
 def user_status():
@@ -46,16 +47,44 @@ def login_api():
 def signup():
     return render_template('signup.html')
 
-@app.route('/cours')
-def cours():
-    user_logged_in = True
-    return render_template('cours.html')
+@app.route('/cours/<int:cours_id>')
+def cours(cours_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
 
-@app.route('/exercice')
-def exercice():
-    return render_template('exercice.html')
+    cursor.execute('SELECT * FROM cours WHERE id_cours = %s', (cours_id,))
+    cours = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    if not cours:
+        return "Cours non trouver", 404
+    
+    chapitres = get_cours_chapitres(cours_id)
+    
+    return render_template("cours.html", cours=cours, chapitres=chapitres)
+
+@app.route('/exercice/<int:id_chap>')
+def exercice(id_chap):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    cursor.execute('SELECT * FROM chapitres WHERE id_chap = %s', (id_chap,))
+    chapitre = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    if not chapitre:
+        return "Chapitre non trouver", 404
+    
+    video = get_videos_chapitres(id_chap)
+
+    return render_template('exercice.html', chapitre=chapitre, video=video)
 
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('home'))
+
