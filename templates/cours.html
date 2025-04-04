@@ -9,16 +9,16 @@
     <div class="description-container">
         <div class="description-box">
             <h1 class="text-xl font-bold px-2 pt-2">Description:</h1>
-            <p class="p-2">In this course, you will begin learning the fundamentals of Python, a beginner-friendly programming language known for its simplicity and readability. Python is an excellent first language to learn, as it provides a strong foundation that will make understanding other programming languages easier.</p>
+            <p class="p-2">{{ cours.description_complete }}</p>
         </div>
         <div class="rating-level-box">
             <div class="level-box">
-                <h1 class="text-xl font-bold">Level: </h1>
-                <h1 class="text-xl px-2">Beginner</h1>
+                <h1 class="text-xl font-bold">Discipline: </h1>
+                <h1 class="text-xl px-2">{{ cours.id_domaine }}</h1>
             </div>
             <div class="rating-box">
-                <h1 class="text-xl font-bold">Rating: </h1>
-                <h1 class="text-xl px-2">⭐⭐⭐⭐⭐</h1>
+                <h1 class="text-xl font-bold">Durée: </h1>
+                <h1 class="text-xl px-2">{{ cours.duree_totale }} minutes</h1>
             </div>
         </div>
     </div>
