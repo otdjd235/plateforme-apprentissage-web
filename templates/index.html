@@ -57,8 +57,7 @@
                     const searchText = searchInput.value.toLowerCase();
                     const disciplineFilter = filterDiscipline.value;
                     
-                    const matchesSearch = course.nom_cours.toLowerCase().includes(searchText) ||
-                                         course.description_courte.toLowerCase().includes(searchText);
+                    const matchesSearch = course.nom_cours.toLowerCase().includes(searchText);
 
                     const matchesDiscipline = disciplineFilter === "" || course.id_domaine == disciplineFilter;
 
