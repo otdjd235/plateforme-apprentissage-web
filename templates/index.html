@@ -8,14 +8,15 @@
 
         <div class="filters">
             <input type="text" id="search" placeholder="Rechercher un cours...">
-            
+            <!-- ici jai remplace les value des options qui etaient 1,2,3,4,5 par les vrais nom des disciplines pour faciliter le tri.
+              Puis jai mis en comment loption Mathematiques car on a pas ca coe discipline -->
             <select id="filter-discipline">
                 <option value="">Toutes les disciplines</option>
-                <option value="1">Mathématiques</option>
-                <option value="2">Informatique</option>
-                <option value="3">Réseaux</option>
-                <option value="4">Sécurité</option>
-                <option value="5">Bases de données</option>
+                <!-- <option value="1">Mathématiques</option> -->
+                <option value="Informatique">Informatique</option>
+                <option value="Réseau">Réseaux</option>
+                <option value="Sécurité">Sécurité</option>
+                <option value="Base de données">Bases de données</option>
             </select>
 
             <select id="sort-duration">
@@ -58,8 +59,8 @@
                     const disciplineFilter = filterDiscipline.value;
                     
                     const matchesSearch = course.nom_cours.toLowerCase().includes(searchText);
-
-                    const matchesDiscipline = disciplineFilter === "" || course.id_domaine == disciplineFilter;
+// ici jai remplace id_domaine par nom_domaine
+                    const matchesDiscipline = disciplineFilter === "" || course.nom_domaine == disciplineFilter;
 
                     return matchesSearch && matchesDiscipline;
                 });
@@ -73,13 +74,13 @@
                 filteredCourses.forEach(course => {
                     const courseCard = document.createElement('div');
                     courseCard.classList.add('course-card');
-
+// Dans la section qui suit, jai remplace id_domaine par nom_domaine pour retourner le nom plutot que lid, au niveau de <span class="discipline">..
                     courseCard.innerHTML = `
                         <a href="/cours/${course.id_cours}" class="course-link">
                             <div class="course-content">
                                 <strong>${course.nom_cours}</strong>
                                 <p>${course.description_courte}</p>
-                                <span class="discipline">Discipline : ${course.id_domaine}</span>
+                                <span class="discipline">Discipline : ${course.nom_domaine}</span>
                                 <span class="duration">Durée : ${course.duree_totale} minutes</span>
                                 <div class="favorite-container">
                                     <button class="favorite-btn" data-id="${course.id_cours}">&#9733;</button>

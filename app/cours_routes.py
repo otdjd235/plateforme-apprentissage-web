@@ -31,7 +31,20 @@ def get_cours():
     connection = get_db_connection()
     cursor = connection.cursor(dictionary = True)
 
-    cursor.execute(" SELECT * FROM cours LIMIT %s OFFSET %s", (cours_per_page, offset))
+   # Je mets en comment pour remplacer avec cursor.execute qui suit celle-ci afin de retourner le nom du domaine en text aulieu de lid du domaine 
+   #cursor.execute(" SELECT * FROM cours LIMIT %s OFFSET %s", (cours_per_page, offset))
+    cursor.execute("""
+    SELECT 
+        c.id_cours, 
+        c.nom_cours, 
+        c.description_courte, 
+        c.duree_totale, 
+        d.nom_dom AS nom_domaine
+    FROM cours c
+    JOIN discipline d ON c.id_domaine = d.id_domaine
+    LIMIT %s OFFSET %s
+""", (cours_per_page, offset))
+
     cours = cursor.fetchall()
 
     cursor.execute("SELECT COUNT(*) as total from cours")
