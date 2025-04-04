@@ -99,7 +99,24 @@
                 document.querySelectorAll(".favorite-btn").forEach(button => {
                     button.addEventListener("click", function() {
                         event.stopPropagation();
-                        this.classList.toggle("favorited");
+                        event.preventDefault();
+
+                        const isFavorited = this.classList.toggle("favorited")
+
+                        if(isFavorited){
+                            //adding course to suivre
+                            fetch('/suivre', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify( { id_cours: this.dataset.id })
+                            })
+                        } else {
+                            fetch(`/suivre/${this.dataset.id}`, {
+                                method: 'DELETE',
+                            });
+                        }
                     });
                 });
             }

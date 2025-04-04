@@ -1,15 +1,20 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from app.db import get_db_connection
 from mysql.connector import IntegrityError
+
 
 suivre_bp = Blueprint('suivre', __name__)
 
 # Pour inscrire un etudiant a un cours, il suit le cours selectionne
 @suivre_bp.route('/suivre', methods=['POST'])
 def suivre_cours():
+    if 'user_id' not in session:
+        return jsonify({ 'error': "User must be logged in"}), 401
+
+
     data = request.get_json()
     id_cours = data.get('id_cours')
-    id_user = data.get('id_user')
+    id_user = session['user_id']
 
     if not all([id_cours, id_user]):
         return jsonify({ 'error': 'Missing required fields'}), 400
@@ -60,3 +65,46 @@ def get_cours_suivi_par_user(id_user):
     connection.close()
     
     return jsonify(cours_suivis), 200
+
+@suivre_bp.route('/suivre/<int:id_cours>', methods=['DELETE'])
+def remove_cours_suivi(id_cours):
+    if 'user_id' not in session:
+        return jsonify({ 'error': 'User must be logged in'}), 401
+    
+    id_user = session['user_id']
+
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("""
+            DELETE FROM suivre
+            WHERE id_user = %s AND id_cours = %s
+        """, (id_user, id_cours))
+
+        connection.commit()
+        cursor.close()
+        connection.close()
+
+        return jsonify({ 'message': 'User ne suit plus le cours'}), 200
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+    
+def get_cours_suivi(id_user):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT cours.*
+        FROM cours
+        JOIN suivre ON cours.id_cours = suivre.id_cours
+        WHERE suivre.id_user = %s
+    """, (id_user,))
+
+    cours_suivis = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    
+    return cours_suivis

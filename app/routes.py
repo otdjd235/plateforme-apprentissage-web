@@ -3,6 +3,7 @@ from app import app
 from app.db import get_db_connection
 from flask import session
 from app.cours_routes import get_cours_chapitres, get_videos_chapitres
+from app.suivre_routes import get_cours_suivi
 
 @app.context_processor
 def user_status():
@@ -22,7 +23,9 @@ def home():
     cursor.close()
     conn.close()
 
-    return render_template('index.html', cours=cours)
+    favorite = get_cours_suivi(session.get('user_id'))
+
+    return render_template('index.html', cours=cours, favorites=favorite)
     
 @app.route('/profile')
 def profile():
@@ -37,7 +40,9 @@ def profile():
         'role': session.get('role')
     }
 
-    return render_template('profile.html', user=user_data)
+    cours_suivi = get_cours_suivi(session.get('user_id'))
+
+    return render_template('profile.html', user=user_data, cours_suivi=cours_suivi)
 
 @app.route('/login')
 def login_api():
