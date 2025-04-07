@@ -1,7 +1,7 @@
 from flask import render_template, request, redirect, url_for
 from app import app
 from app.db import get_db_connection
-from flask import session
+from flask import session, jsonify
 from app.cours_routes import get_cours_chapitres, get_videos_chapitres
 from app.suivre_routes import get_cours_suivi
 
@@ -23,9 +23,12 @@ def home():
     cursor.close()
     conn.close()
 
-    favorite = get_cours_suivi(session.get('user_id'))
+    return render_template('index.html', cours=cours)
 
-    return render_template('index.html', cours=cours, favorites=favorite)
+@app.route('/api/cours_suivi')
+def api_cours_suivi():
+    cours_suivi = get_cours_suivi(session.get("user_id"))
+    return jsonify(cours_suivi)
     
 @app.route('/profile')
 def profile():
@@ -57,7 +60,15 @@ def cours(cours_id):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
-    cursor.execute('SELECT * FROM cours WHERE id_cours = %s', (cours_id,))
+    cursor.execute("""
+    SELECT
+        c.*, 
+        d.nom_dom AS nom_domaine 
+    FROM cours c
+    JOIN discipline d ON c.id_domaine = d.id_domaine
+    WHERE id_cours = %s        
+    """, (cours_id,))
+    
     cours = cursor.fetchone()
 
     cursor.close()

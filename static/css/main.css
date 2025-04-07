@@ -27,6 +27,11 @@ html, body {
     min-width: calc(100% - 400px);
 }
 
+.section.hidden {
+    display: none !important;
+}
+
+
 .container-cours{
     margin-left: 200px;
     margin-right: 200px;
@@ -251,6 +256,11 @@ input, select {
     text-decoration: none;
     color: inherit;
     display: block;
+}
+
+.profile-img{
+    display: block;
+    margin: 0 auto;
 }
 
 

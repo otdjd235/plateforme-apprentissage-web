@@ -40,6 +40,16 @@
             const sortDuration = document.getElementById("sort-duration");
 
             let coursesData = [];
+            let favoritesData = [];
+
+            function fetchFavoris() {
+                fetch('/api/cours_suivi')
+                    .then(response => response.json())
+                    .then(data => {
+                        favoritesData = data;
+                        fetchCourses()
+                    })
+            }
 
             function fetchCourses() {
                 fetch("/api/cours?page=1&cours_per_page=10")
@@ -90,6 +100,13 @@
                     `;
 
                     courseListElement.appendChild(courseCard);
+                    
+                    const favoriteBtn = courseCard.querySelector('.favorite-btn');
+
+                    if (favoritesData.some(favoris => favoris.id_cours === course.id_cours)) {
+                        favoriteBtn.classList.add('favorited');
+                    }
+                    
                 });
 
                 addFavoriteButtonListeners();
@@ -125,7 +142,10 @@
             filterDiscipline.addEventListener("change", displayCourses);
             sortDuration.addEventListener("change", displayCourses);
 
-            fetchCourses();
+
+
+            fetchFavoris();
+
         });
     </script>
 

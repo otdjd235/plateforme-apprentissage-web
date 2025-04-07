@@ -10,7 +10,14 @@ def get_cours_by_id(cours_id):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary = True)
 
-    cursor.execute("SELECT * FROM cours WHERE id_cours = %s", (cours_id,))
+    cursor.execute("""
+    SELECT
+        c.*, 
+        d.nom_dom AS nom_domaine 
+    FROM cours c
+    JOIN discipline d ON c.id_domaine = d.id_domaine
+    WHERE id_cours = %s        
+    """, (cours_id,))
         
     cours = cursor.fetchone();
     cursor.close()
