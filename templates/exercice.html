@@ -16,6 +16,62 @@
                 allowfullscreen>
     </iframe>
 
+    <div class="exercices" id="exercice">
+        <h3 class="text-xl font-bold mt-4 mb-2">Exercices</h3>
+        <h3> #1: {{ exercice.enonce }}</h3>
 
+        <form id="exercice-form">
+            <label>
+                <input type="radio" name="exo" value="choix_1" class="ml-4">
+                A. {{ exercice.choix_1 }}
+            </label><br>
+
+            <label>
+                <input type="radio" name="exo" value="choix_2" class="ml-4">
+                B. {{ exercice.choix_2 }}
+            </label><br>
+
+            <label>
+                <input type="radio" name="exo" value="choix_3" class="ml-4">
+                C. {{ exercice.choix_3 }}
+            </label><br>
+
+            <label>
+                <input type="radio" name="exo" value="choix_4" class="ml-4">
+                D. {{ exercice.choix_4 }}
+            </label><br>
+
+            <button type="submit" class="bg-green-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-green-600 text-white mt-4">Soumettre</button>
+        </form>
+
+        <div id="result"></div>
+    </div>
 </div>
+
+
+<script>
+
+    document.getElementById('exercice-form').addEventListener("submit", function(e) {
+        e.preventDefault();
+
+        const selected = document.querySelector('input[name="exo"]:checked');
+        const result = document.getElementById('result');
+        var bonne_reponse = "{{ exercice.bonne_reponse }}";
+
+        if(!selected){
+            result.textContent = "Veuiller selectionner une reponse"
+            return;
+        }
+
+
+        if(selected.value === bonne_reponse){
+            result.textContent = "Bonne Réponse!"
+            result.style.color = "green"
+        } else {
+            result.textContent = "Mauvaise Réponse, Réessayer"
+            result.style.color = "red"
+        }
+    });
+
+</script>
 {% endblock %}

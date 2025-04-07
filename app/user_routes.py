@@ -77,7 +77,7 @@ def login():
         connection.close()
 
         if not user:
-            return jsonify({'error': "Invalid email or password"}), 401
+            return jsonify({'error': "Mot de passe ou courriel invalid"}), 401
 
         if check_password_hash(user['mot_de_passe'], mot_de_passe):
             session['user_id'] = user['id']
@@ -93,7 +93,7 @@ def login():
                 'id': user['id']
             }), 200
         else:
-            return jsonify({'error' : "Invalid password or email"}), 401
+            return jsonify({'error' : "Mot de passe ou courriel invalid"}), 401
         
 
 

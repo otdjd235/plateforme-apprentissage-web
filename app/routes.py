@@ -4,6 +4,7 @@ from app.db import get_db_connection
 from flask import session, jsonify
 from app.cours_routes import get_cours_chapitres, get_videos_chapitres
 from app.suivre_routes import get_cours_suivi
+from app.exercices_routes import api_get_exercices_par_chapitres
 
 @app.context_processor
 def user_status():
@@ -97,7 +98,9 @@ def exercice(id_chap):
     
     video = get_videos_chapitres(id_chap)
 
-    return render_template('exercice.html', chapitre=chapitre, video=video)
+    exercice = api_get_exercices_par_chapitres(id_chap)
+
+    return render_template('exercice.html', chapitre=chapitre, video=video, exercice=exercice)
 
 @app.route('/logout')
 def logout():

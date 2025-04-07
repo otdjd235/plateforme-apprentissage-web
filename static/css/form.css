@@ -81,7 +81,8 @@ body {
 }
 
 .submitBtn,
-.cancelBtn {
+.cancelBtn,
+.signUpBtn {
     flex: none; /* Makes both buttons take equal width */
     text-align: center;
     padding: 15px; /* Ensure same padding */
@@ -112,6 +113,17 @@ body {
     background-color: rgb(255, 100, 100);
     transform: translateY(-2px);
 }
+
+.signUpBtn {
+    background-color: mediumseagreen;
+    color: white;
+}
+
+.signUpBtn:hover {
+    background-color: green;
+    transform: translateY(-2px);
+}
+
 
 .input:focus + .label {
     top: -7px;

@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="container1">
-        <h1>Liste des Cours</h1>
+        <h1 class="text-3xl font-bold mt-2 mb-2">Répertoire des Cours</h1>
 
         <div class="filters">
             <input type="text" id="search" placeholder="Rechercher un cours...">
@@ -38,6 +38,8 @@
             const searchInput = document.getElementById("search");
             const filterDiscipline = document.getElementById("filter-discipline");
             const sortDuration = document.getElementById("sort-duration");
+
+            const userLoggedIn = {{ user_logged_in | tojson }};
 
             let coursesData = [];
             let favoritesData = [];
@@ -110,6 +112,7 @@
                 });
 
                 addFavoriteButtonListeners();
+                addCourseCardListener();
             }
 
             function addFavoriteButtonListeners() {
@@ -117,6 +120,12 @@
                     button.addEventListener("click", function() {
                         event.stopPropagation();
                         event.preventDefault();
+
+                        if(!userLoggedIn){
+                            alert("Vous devez être connecter pour suivre un cours")
+                            window.location.href = "/login"
+                            return;
+                        }
 
                         const isFavorited = this.classList.toggle("favorited")
 
@@ -129,6 +138,12 @@
                                 },
                                 body: JSON.stringify( { id_cours: this.dataset.id })
                             })
+                            .then(res => {
+                                if(!res.ok) {
+                                    this.classList.remove("favorited");
+                                    alert("Erreur lors de l'ajout aux favoris");
+                                }
+                            })
                         } else {
                             fetch(`/suivre/${this.dataset.id}`, {
                                 method: 'DELETE',
@@ -138,11 +153,21 @@
                 });
             }
 
+            function addCourseCardListener() {
+                document.querySelectorAll(".course-link").forEach(card => {
+                    card.addEventListener("click", function(event) {
+                        if(!userLoggedIn){
+                            event.preventDefault();
+                            alert("Vous devez être connecter pour regarder un cours");
+                            window.location.href = "/login";
+                        }
+                    });
+                });
+            }
+
             searchInput.addEventListener("input", displayCourses);
             filterDiscipline.addEventListener("change", displayCourses);
             sortDuration.addEventListener("change", displayCourses);
-
-
 
             fetchFavoris();
 

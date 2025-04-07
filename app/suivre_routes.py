@@ -33,6 +33,7 @@ def suivre_cours():
         return jsonify({ 'message' : 'User is now following cours'})
     except IntegrityError as e:
         error_message = str(e)
+        print("🔴 IntegrityError:", error_message)
         if "a foreign key constraint fails" in error_message:
             if "`suivre_ibfk_1`" in error_message:
                 return jsonify({'error': 'User does not exist'}), 400

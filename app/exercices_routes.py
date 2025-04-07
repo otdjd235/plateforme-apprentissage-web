@@ -24,8 +24,6 @@ def get_exercices_par_chapitre(chapitre_id):
     cursor.close()
     conn.close()
     return jsonify(exercices), 200
-
-
 # marque un exercice comme completé
 
 @exercices_bp.route('/exercice_complete', methods=['POST'])
@@ -160,3 +158,19 @@ def repondre_exercice():
 
     except Exception as e:
         return jsonify({ 'error': str(e) }), 500
+    
+
+
+def api_get_exercices_par_chapitres(chapitre_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT * FROM exercice WHERE id_chap = %s
+    """, (chapitre_id,))
+
+    exercice = cursor.fetchone()
+
+    cursor.close()
+    conn.close()
+    return exercice;

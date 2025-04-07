@@ -5,7 +5,7 @@
 {% block content %}
     <div class="container">
         <div class="sidebar">
-            <a class="active" href="{{ url_for('profile') }}" id="profile-tab">&#128100 Profile</a>
+            <a class="active" href="{{ url_for('profile') }}" id="profile-tab">&#128100 Profil</a>
             <a href="#" id="favorites-tab">&#x1F4DA Cours Favoris</a>
             <a href="#" id="setting-tab">&#9881 Profile Settings</a>
         </div>
@@ -17,11 +17,11 @@
                 <div>{{ user.role }}</div>
             </div>
             <div class="card large">
-                <div style="font-size: 24px; padding-bottom: 10px; font-weight: bold;">Account Information</div>
-                <div class="profile-info">Username: {{ user.username }}</div>
-                <div class="profile-info">Email: {{ user.email }}</div>
-                <div class="profile-info">Phone Number: {{ user.tel }}</div>
-                <div class="profile-info">Date of Birth: {{ user.date_naissance }}</div>
+                <div style="font-size: 24px; padding-bottom: 10px; font-weight: bold;">Informations du profil</div>
+                <div class="profile-info">Nom d'utilisateur: {{ user.username }}</div>
+                <div class="profile-info">Courriel: {{ user.email }}</div>
+                <div class="profile-info">Telephone: {{ user.tel }}</div>
+                <div class="profile-info">Date de naissance: {{ user.date_naissance }}</div>
             </div>
         </div>
 

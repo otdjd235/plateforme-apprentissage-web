@@ -11,50 +11,50 @@
 <body>
     <div class="signupFrm">
         <form id="signup-form" class="form">
-          <h1 class="title">Sign up</h1>
+          <h1 class="title">Création de compte</h1>
     
           <div class="inputContainer">
             <input type="text" class="input" id="email" name="email">
-            <label for="email" class="label">Email</label>
+            <label for="email" class="label">Courriel</label>
           </div>
 
           <div class="inputContainer">
             <input type="tel" class="input" id="phone" name="phone" pattern="\d{3}-\d{3}-\d{4}" required>
-            <label for="phone" class="label">Phone Number (123-456-7890)</label>
+            <label for="phone" class="label">Telephone (123-456-7890)</label>
           </div>
     
           <div class="inputContainer">
             <input type="text" class="input" id="username", name="username">
-            <label for="username" class="label">Username</label>
+            <label for="username" class="label">Nom d'utilisateur</label>
           </div>
 
           <div class="inputContainer">
             <input type="date" class="input" id="birthdate" name="birthdate" required>
-            <label for="birthdate" class="label">Birthdate</label>
+            <label for="birthdate" class="label">Date de naissance</label>
           </div>
 
           <div class="inputContainer">
             <select id="role" name="role">
-              <option value="etudiant">Student</option>
-              <option value="prof">Professor</option>
+              <option value="etudiant">Etudiant</option>
+              <option value="prof">Professeur</option>
             </select>
             <label for="role" class="label">Role</label>
           </div>
     
           <div class="inputContainer">
             <input type="password" class="input" name="password" id="password" onkeyup='check();'>
-            <label for="password" class="label">Password (6 characters minimum)</label>
+            <label for="password" class="label">Mot de passe (6 characters minimum)</label>
           </div>
     
           <div class="inputContainer">
             <input type="password" class="input" name="confirm_password" id="confirm_password" onkeyup='check();'>
-            <label for="confirm_password" class="label">Confirm Password</label>
+            <label for="confirm_password" class="label">Confirmer le mot de passes</label>
           </div>
           <span id="message"></span>
 
           <div class="confirm-container">
-            <button type="button" class="cancelBtn" onclick="goBack()">Cancel</button>
-            <input type="submit" class="submitBtn" value="Sign up">
+            <button type="button" class="cancelBtn" onclick="goBack()">Annuler</button>
+            <input type="submit" class="submitBtn" value="Confirmer">
           </div>
         </form>
       </div>

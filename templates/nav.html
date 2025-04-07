@@ -10,17 +10,17 @@
     <nav class="w-full border border-gray-300 bg-gray-200 dark:border-neutral-600 dark:bg-neutral-800 p-3 text-gray-900 dark:text-white">
         <div class="hidden lg:flex items center justify-between">
             <div class="flex items-center gap-4">
-                <a href="{{ url_for('home') }}" class="mr-4">Home</a>
+                <a href="{{ url_for('home') }}" class="mr-4">Accueil</a>
             </div>
             {% if user_logged_in %}
                 <div class="flex items-center gap-4">
-                    <button onclick="logout()" class="bg-sky-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-sky-600 text-white">Logout</button>
-                    <a href="{{ url_for('profile') }}">Profile</a>
+                    <button onclick="logout()" class="bg-sky-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-sky-600 text-white">Déconnexion</button>
+                    <a href="{{ url_for('profile') }}">Profil</a>
                 </div>
             {% else %}
                 <div class="flex items-center gap-4">
-                    <button onclick="redirectToLogin()" class="bg-sky-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-sky-600 text-white">Login</button>
-                    <button onclick="redirectToSignUp()" class="bg-green-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-green-600 text-white">Sign Up</button>
+                    <button onclick="redirectToLogin()" class="bg-sky-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-sky-600 text-white">Connexion</button>
+                    <button onclick="redirectToSignUp()" class="bg-green-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-green-600 text-white">S'inscire</button>
                 </div>
             {% endif %}
             </div>
