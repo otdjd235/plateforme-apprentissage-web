@@ -32,29 +32,49 @@ def get_cours_by_id(cours_id):
 def get_cours():
     page = int(request.args.get('page', 1))
     cours_per_page = int(request.args.get('cours_per_page', 10))
-    
-    offset = (page - 1) * cours_per_page #Indique a quel item commencer pour les afficher
+    offset = (page - 1) * cours_per_page
+
+    recherche = request.args.get('recherche', '').lower()
+    nom_domaine = request.args.get('nom_domaine', '')
+    tri = request.args.get('tri', '')  # 'asc' ou 'desc'
 
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary = True)
+    cursor = connection.cursor(dictionary=True)
 
-   # Je mets en comment pour remplacer avec cursor.execute qui suit celle-ci afin de retourner le nom du domaine en text aulieu de lid du domaine 
-   #cursor.execute(" SELECT * FROM cours LIMIT %s OFFSET %s", (cours_per_page, offset))
-    cursor.execute("""
-    SELECT 
-        c.id_cours, 
-        c.nom_cours, 
-        c.description_courte, 
-        c.duree_totale, 
-        d.nom_dom AS nom_domaine
-    FROM cours c
-    JOIN discipline d ON c.id_domaine = d.id_domaine
-    LIMIT %s OFFSET %s
-""", (cours_per_page, offset))
+    query = """
+        SELECT 
+            c.id_cours, 
+            c.nom_cours, 
+            c.description_courte, 
+            c.duree_totale, 
+            d.nom_dom AS nom_domaine
+        FROM cours c
+        JOIN discipline d ON c.id_domaine = d.id_domaine
+        WHERE (%s = '' OR LOWER(c.nom_cours) LIKE %s)
+        AND (%s = '' OR d.nom_dom = %s)
+    """
+    params = [recherche, f"%{recherche}%", nom_domaine, nom_domaine]
 
+    if tri == 'asc':
+        query += " ORDER BY c.duree_totale ASC"
+    elif tri == 'desc':
+        query += " ORDER BY c.duree_totale DESC"
+
+    query += " LIMIT %s OFFSET %s"
+    params += [cours_per_page, offset]
+
+    cursor.execute(query, params)
     cours = cursor.fetchall()
 
-    cursor.execute("SELECT COUNT(*) as total from cours")
+    # Compter le total des cours qui correspondent aux filtres
+    count_query = """
+        SELECT COUNT(*) as total
+        FROM cours c
+        JOIN discipline d ON c.id_domaine = d.id_domaine
+        WHERE (%s = '' OR LOWER(c.nom_cours) LIKE %s)
+        AND (%s = '' OR d.nom_dom = %s)
+    """
+    cursor.execute(count_query, [recherche, f"%{recherche}%", nom_domaine, nom_domaine])
     total = cursor.fetchone()['total']
 
     cursor.close()
@@ -62,9 +82,9 @@ def get_cours():
 
     return jsonify({
         'page': page,
-        'cours_per_page' : cours_per_page,
-        'cours_total' : total,
-        'data' : cours
+        'cours_per_page': cours_per_page,
+        'cours_total': total,
+        'data': cours
     }), 200
 
 @app.route('/cours/<int:cours_id>/chapitres', methods=['GET'])

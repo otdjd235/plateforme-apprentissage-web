@@ -3,175 +3,214 @@
 {% block title %}Home - GLO-2005{% endblock %}
 
 {% block content %}
-    <div class="container1">
-        <h1 class="text-3xl font-bold mt-2 mb-2">Répertoire des Cours</h1>
+<div class="container1">
+    <h1 class="text-3xl font-bold mt-2 mb-2">Répertoire des Cours</h1>
 
-        <div class="filters">
-            <input type="text" id="search" placeholder="Rechercher un cours...">
-            <!-- ici jai remplace les value des options qui etaient 1,2,3,4,5 par les vrais nom des disciplines pour faciliter le tri.
-              Puis jai mis en comment loption Mathematiques car on a pas ca coe discipline -->
-            <select id="filter-discipline">
-                <option value="">Toutes les disciplines</option>
-                <!-- <option value="1">Mathématiques</option> -->
-                <option value="Informatique">Informatique</option>
-                <option value="Réseau">Réseaux</option>
-                <option value="Sécurité">Sécurité</option>
-                <option value="Base de données">Bases de données</option>
-            </select>
+    <div class="filters">
+        <input type="text" id="search" placeholder="Rechercher un cours...">
+        <select id="filter-discipline">
+            <option value="">Toutes les disciplines</option>
+            <option value="Informatique">Informatique</option>
+            <option value="Réseau">Réseaux</option>
+            <option value="Sécurité">Sécurité</option>
+            <option value="Base de données">Bases de données</option>
+        </select>
 
-            <select id="sort-duration">
-                <option value="">Trier par durée</option>
-                <option value="asc">Durée croissante</option>
-                <option value="desc">Durée décroissante</option>
-            </select>
-        </div>
-
-        <div class="courses">
-            <div class="course-grid" id="course-list">
-            </div>
-        </div>
+        <select id="sort-duration">
+            <option value="">Trier par durée</option>
+            <option value="asc">Durée croissante</option>
+            <option value="desc">Durée décroissante</option>
+        </select>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const courseListElement = document.getElementById("course-list");
-            const searchInput = document.getElementById("search");
-            const filterDiscipline = document.getElementById("filter-discipline");
-            const sortDuration = document.getElementById("sort-duration");
+    <div class="courses">
+        <div class="course-grid" id="course-list"></div>
+        <div class="load-more-container" style="text-align: center; margin-top: 20px;">
+            <button id="load-more" class="btn">Voir plus</button>
+        </div>
+    </div>
+</div>
 
-            const userLoggedIn = {{ user_logged_in | tojson }};
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const courseListElement = document.getElementById("course-list");
+        const searchInput = document.getElementById("search");
+        const filterDiscipline = document.getElementById("filter-discipline");
+        const sortDuration = document.getElementById("sort-duration");
+        const loadMoreButton = document.getElementById("load-more");
 
-            let coursesData = [];
-            let favoritesData = [];
+        const userLoggedIn = {{ user_logged_in | tojson }};
+        let coursesData = [];
+        let favoritesData = [];
+        let currentPage = 1;
+        const coursPerPage = 10;
+        let totalCourses = null;
 
-            function fetchFavoris() {
-                fetch('/api/cours_suivi')
-                    .then(response => response.json())
-                    .then(data => {
-                        favoritesData = data;
-                        fetchCourses()
-                    })
+        function fetchFavoris() {
+            fetch('/api/cours_suivi')
+                .then(response => response.json())
+                .then(data => {
+                    favoritesData = data;
+                    fetchCourses(true);
+                });
+        }
+
+        function fetchCourses(refresh = false) {
+            if (refresh) {
+                coursesData = [];
+                currentPage = 1;
             }
 
-            function fetchCourses() {
-                fetch("/api/cours?page=1&cours_per_page=10")
-                    .then(response => response.json())
-                    .then(data => {
-                        coursesData = data.data;
-                        displayCourses();
-                    })
-                    .catch(error => console.error("Erreur lors de la récupération des cours:", error));
-            }
+            const hasFilter = searchInput.value.trim() !== "" || filterDiscipline.value !== "" || sortDuration.value !== "";
 
-            function displayCourses() {
-                courseListElement.innerHTML = "";
-
-                let filteredCourses = coursesData.filter(course => {
-                    const searchText = searchInput.value.toLowerCase();
-                    const disciplineFilter = filterDiscipline.value;
-                    
-                    const matchesSearch = course.nom_cours.toLowerCase().includes(searchText);
-// ici jai remplace id_domaine par nom_domaine
-                    const matchesDiscipline = disciplineFilter === "" || course.nom_domaine == disciplineFilter;
-
-                    return matchesSearch && matchesDiscipline;
+            const fetchPage = (page) => {
+                const params = new URLSearchParams({
+                    page: page,
+                    cours_per_page: coursPerPage
                 });
 
-                if (sortDuration.value === "asc") {
-                    filteredCourses.sort((a, b) => a.duree_totale - b.duree_totale);
-                } else if (sortDuration.value === "desc") {
-                    filteredCourses.sort((a, b) => b.duree_totale - a.duree_totale);
-                }
+                return fetch(`/api/cours?${params.toString()}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        coursesData = coursesData.concat(data.data);
+                        totalCourses = data.cours_total;
 
-                filteredCourses.forEach(course => {
-                    const courseCard = document.createElement('div');
-                    courseCard.classList.add('course-card');
-// Dans la section qui suit, jai remplace id_domaine par nom_domaine pour retourner le nom plutot que lid, au niveau de <span class="discipline">..
-                    courseCard.innerHTML = `
-                        <a href="/cours/${course.id_cours}" class="course-link">
-                            <div class="course-content">
-                                <strong>${course.nom_cours}</strong>
-                                <p>${course.description_courte}</p>
-                                <span class="discipline">Discipline : ${course.nom_domaine}</span>
-                                <span class="duration">Durée : ${course.duree_totale} minutes</span>
-                                <div class="favorite-container">
-                                    <button class="favorite-btn" data-id="${course.id_cours}">&#9733;</button>
-                                </div>
-                            </div>
-                        </a>
-                    `;
-
-                    courseListElement.appendChild(courseCard);
-                    
-                    const favoriteBtn = courseCard.querySelector('.favorite-btn');
-
-                    if (favoritesData.some(favoris => favoris.id_cours === course.id_cours)) {
-                        favoriteBtn.classList.add('favorited');
-                    }
-                    
-                });
-
-                addFavoriteButtonListeners();
-                addCourseCardListener();
-            }
-
-            function addFavoriteButtonListeners() {
-                document.querySelectorAll(".favorite-btn").forEach(button => {
-                    button.addEventListener("click", function() {
-                        event.stopPropagation();
-                        event.preventDefault();
-
-                        if(!userLoggedIn){
-                            alert("Vous devez être connecter pour suivre un cours")
-                            window.location.href = "/login"
-                            return;
-                        }
-
-                        const isFavorited = this.classList.toggle("favorited")
-
-                        if(isFavorited){
-                            //adding course to suivre
-                            fetch('/suivre', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify( { id_cours: this.dataset.id })
-                            })
-                            .then(res => {
-                                if(!res.ok) {
-                                    this.classList.remove("favorited");
-                                    alert("Erreur lors de l'ajout aux favoris");
-                                }
-                            })
+                        if (hasFilter && coursesData.length < totalCourses) {
+                            return fetchPage(page + 1); // Continue jusqu’à tout charger
                         } else {
-                            fetch(`/suivre/${this.dataset.id}`, {
-                                method: 'DELETE',
-                            });
+                            currentPage = page;
+                            displayCourses();
+                            if (coursesData.length >= totalCourses) {
+                                loadMoreButton.style.display = "none";
+                            } else {
+                                loadMoreButton.style.display = "block";
+                            }
                         }
                     });
-                });
+            };
+
+            fetchPage(currentPage);
+        }
+
+        function displayCourses() {
+            courseListElement.innerHTML = "";
+
+            let filteredCourses = coursesData.filter(course => {
+                const searchText = searchInput.value.toLowerCase();
+                const disciplineFilter = filterDiscipline.value;
+
+                const matchesSearch = course.nom_cours.toLowerCase().includes(searchText);
+                const matchesDiscipline = disciplineFilter === "" || course.nom_domaine === disciplineFilter;
+
+                return matchesSearch && matchesDiscipline;
+            });
+
+            if (sortDuration.value === "asc") {
+                filteredCourses.sort((a, b) => a.duree_totale - b.duree_totale);
+            } else if (sortDuration.value === "desc") {
+                filteredCourses.sort((a, b) => b.duree_totale - a.duree_totale);
             }
 
-            function addCourseCardListener() {
-                document.querySelectorAll(".course-link").forEach(card => {
-                    card.addEventListener("click", function(event) {
-                        if(!userLoggedIn){
-                            event.preventDefault();
-                            alert("Vous devez être connecter pour regarder un cours");
-                            window.location.href = "/login";
-                        }
-                    });
+            filteredCourses.forEach(course => {
+                const courseCard = document.createElement('div');
+                courseCard.classList.add('course-card');
+                courseCard.innerHTML = `
+                    <a href="/cours/${course.id_cours}" class="course-link">
+                        <div class="course-content">
+                            <strong>${course.nom_cours}</strong>
+                            <p>${course.description_courte}</p>
+                            <span class="discipline">Discipline : ${course.nom_domaine}</span>
+                            <span class="duration">Durée : ${course.duree_totale} minutes</span>
+                            <div class="favorite-container">
+                                <button class="favorite-btn" data-id="${course.id_cours}">&#9733;</button>
+                            </div>
+                        </div>
+                    </a>
+                `;
+                courseListElement.appendChild(courseCard);
+
+                const favoriteBtn = courseCard.querySelector('.favorite-btn');
+
+                if (favoritesData.some(f => f.id_cours === course.id_cours)) {
+                    favoriteBtn.classList.add('favorited');
+                }
+            });
+
+            addFavoriteButtonListeners();
+            addCourseCardListener();
+        }
+
+        function addFavoriteButtonListeners() {
+            document.querySelectorAll(".favorite-btn").forEach(button => {
+                button.addEventListener("click", function (event) {
+                    event.stopPropagation();
+                    event.preventDefault();
+
+                    if (!userLoggedIn) {
+                        alert("Vous devez être connecté pour suivre un cours");
+                        window.location.href = "/login";
+                        return;
+                    }
+
+                    const isFavorited = this.classList.toggle("favorited");
+
+                    if (isFavorited) {
+                        fetch('/suivre', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ id_cours: this.dataset.id })
+                        }).then(res => {
+                            if (!res.ok) {
+                                this.classList.remove("favorited");
+                                alert("Erreur lors de l'ajout aux favoris");
+                            }
+                        });
+                    } else {
+                        fetch(`/suivre/${this.dataset.id}`, {
+                            method: 'DELETE',
+                        });
+                    }
                 });
-            }
+            });
+        }
 
-            searchInput.addEventListener("input", displayCourses);
-            filterDiscipline.addEventListener("change", displayCourses);
-            sortDuration.addEventListener("change", displayCourses);
+        function addCourseCardListener() {
+            document.querySelectorAll(".course-link").forEach(card => {
+                card.addEventListener("click", function (event) {
+                    if (!userLoggedIn) {
+                        event.preventDefault();
+                        alert("Vous devez être connecté pour regarder un cours");
+                        window.location.href = "/login";
+                    }
+                });
+            });
+        }
 
-            fetchFavoris();
-
+        // Listeners pour recherche et filtres
+        searchInput.addEventListener("input", () => {
+            currentPage = 1;
+            fetchCourses(true);
         });
-    </script>
+
+        filterDiscipline.addEventListener("change", () => {
+            currentPage = 1;
+            fetchCourses(true);
+        });
+
+        sortDuration.addEventListener("change", () => {
+            currentPage = 1;
+            fetchCourses(true);
+        });
+
+        loadMoreButton.addEventListener("click", () => {
+            currentPage++;
+            fetchCourses();
+        });
+
+        fetchFavoris();
+    });
+</script>
 
 {% endblock %}
