@@ -173,6 +173,7 @@ input, select {
 
 .courses {
     margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .course-grid {
@@ -263,4 +264,15 @@ input, select {
     margin: 0 auto;
 }
 
+.chapitre-card {
+    position: relative;
+    opacity: 1;
+    cursor: pointer;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.chapitre-card.locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 

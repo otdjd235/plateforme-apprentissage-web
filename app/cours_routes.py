@@ -36,7 +36,7 @@ def get_cours():
 
     recherche = request.args.get('recherche', '').lower()
     nom_domaine = request.args.get('nom_domaine', '')
-    tri = request.args.get('tri', '')  # 'asc' ou 'desc'
+    tri = request.args.get('tri', '')
 
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
@@ -66,7 +66,6 @@ def get_cours():
     cursor.execute(query, params)
     cours = cursor.fetchall()
 
-    # Compter le total des cours qui correspondent aux filtres
     count_query = """
         SELECT COUNT(*) as total
         FROM cours c
@@ -120,17 +119,38 @@ def get_cours_chapitres(cours_id):
     
     return chapitres
 
-def get_videos_chapitres(id_chap):
+def get_cours_completer_flag(user_id, id_chap):
     connection = get_db_connection()
-    cursor = connection.cursor(dictionary = True)
+    cursor = connection.cursor()
 
-    cursor.execute("SELECT * FROM videoscours WHERE id_chap = %s", (id_chap,))
-    video = cursor.fetchall()
-
+    cursor.execute("""
+        SELECT 1 FROM chapitres_complete
+        WHERE id_user = %s AND id_chap = %s
+    """, (user_id, id_chap))
+    completed = cursor.fetchone() is not None
     cursor.close()
     connection.close()
-    
-    return video
 
+    return completed
 
+#Prend en parametre listes de chapitres associer au cours qui a deja ete chercher avant
+def get_chapitre_completed_map(id_user, chapitres):
+    connection = get_db_connection()
+    cursor = connection.cursor()
 
+    chapitres_ids = [chapitre["id_chap"] for chapitre in chapitres]
+    chapitres_complete_dict = {chapitre_id: False for chapitre_id in chapitres_ids}
+
+    if chapitres_ids:
+        placeholders = ','.join(['%s'] * len(chapitres_ids))
+        query = f"""
+            SELECT id_chap FROM chapitres_complete 
+            WHERE id_user = %s AND id_chap IN ({placeholders})
+        """
+        params = [id_user] + chapitres_ids
+        cursor.execute(query, params)
+
+        for (completed_chapitre,) in cursor.fetchall():
+            chapitres_complete_dict[completed_chapitre] = True
+
+    return chapitres_complete_dict

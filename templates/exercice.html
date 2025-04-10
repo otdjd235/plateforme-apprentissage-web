@@ -4,74 +4,124 @@
 
 {% block content %}
 <div class="container-cours">
+    
+    <a href="{{ url_for('cours', cours_id=chapitre.id_cours) }}" 
+        class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mb-4 w-fit">
+        ← Retour au cours
+    </a>
+
     <div class="flex">
-        <h1 class="text-3xl font-bold mb-4 mt-4">{{ chapitre.titre_chap }} </h1>
-        <h1 class="text-3xl ml-3 mt-4 mb-4"> Chapitre {{ chapitre.ordre }} </h1>
+        <h1 class="text-3xl font-bold mb-4 mt-4">{{ chapitre.titre_chap }}</h1>
+        <h1 class="text-3xl ml-3 mt-4 mb-4">Chapitre {{ chapitre.ordre }}</h1>
     </div>
 
-    <iframe src="https://www.youtube.com/embed/mRMmlo_Uqcs?si=CK8hokBrZMvmzh6w" 
-                title="YouTube video player" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                referrerpolicy="strict-origin-when-cross-origin" 
-                allowfullscreen>
+    <iframe src="{{ video.url_video.replace('watch?v=', 'embed/') }}"  
+            title="YouTube video player" 
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            allowfullscreen>
     </iframe>
 
     <div class="exercices" id="exercice">
         <h3 class="text-xl font-bold mt-4 mb-2">Exercices</h3>
-        <h3> #1: {{ exercice.enonce }}</h3>
+        <h3>#1: {{ exercice.enonce }}</h3>
 
-        <form id="exercice-form">
+        {% if completed %}
+            <div class="text-green-600 font-semibold mb-4">
+                ✅ Vous avez déjà complété ce chapitre.
+            </div>
+        {% endif %}
+
+        <form id="exercice-form" {% if completed %}style="pointer-events: none; opacity: 0.6;"{% endif %}>
             <label>
-                <input type="radio" name="exo" value="choix_1" class="ml-4">
+                <input type="radio" name="exo" value="choix_1" class="ml-4"
+                       {% if completed and exercice.bonne_reponse == 'choix_1' %}checked disabled{% endif %}>
                 A. {{ exercice.choix_1 }}
             </label><br>
 
             <label>
-                <input type="radio" name="exo" value="choix_2" class="ml-4">
+                <input type="radio" name="exo" value="choix_2" class="ml-4"
+                       {% if completed and exercice.bonne_reponse == 'choix_2' %}checked disabled{% endif %}>
                 B. {{ exercice.choix_2 }}
             </label><br>
 
             <label>
-                <input type="radio" name="exo" value="choix_3" class="ml-4">
+                <input type="radio" name="exo" value="choix_3" class="ml-4"
+                       {% if completed and exercice.bonne_reponse == 'choix_3' %}checked disabled{% endif %}>
                 C. {{ exercice.choix_3 }}
             </label><br>
 
             <label>
-                <input type="radio" name="exo" value="choix_4" class="ml-4">
+                <input type="radio" name="exo" value="choix_4" class="ml-4"
+                       {% if completed and exercice.bonne_reponse == 'choix_4' %}checked disabled{% endif %}>
                 D. {{ exercice.choix_4 }}
             </label><br>
 
-            <button type="submit" class="bg-green-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-green-600 text-white mt-4">Soumettre</button>
+            <button type="submit"
+                    class="bg-green-500 px-3 py-1 rounded-lg cursor-pointer hover:bg-green-600 text-white mt-4"
+                    {% if completed %}disabled{% endif %}>
+                Soumettre
+            </button>
         </form>
 
-        <div id="result"></div>
+        <div id="result" class="mt-3 font-semibold"></div>
     </div>
 </div>
 
-
 <script>
-
-    document.getElementById('exercice-form').addEventListener("submit", function(e) {
+    document.getElementById('exercice-form')?.addEventListener("submit", function(e) {
         e.preventDefault();
 
         const selected = document.querySelector('input[name="exo"]:checked');
         const result = document.getElementById('result');
-        var bonne_reponse = "{{ exercice.bonne_reponse }}";
+        const bonne_reponse = "{{ exercice.bonne_reponse }}";
 
-        if(!selected){
-            result.textContent = "Veuiller selectionner une reponse"
+        // Flask-passed IDs
+        const idUser = {{ user_id }};
+        const idChap = {{ chapitre.id_chap }};
+        const idCours = {{ chapitre.id_cours }};
+
+        if (!selected) {
+            result.textContent = "Veuillez sélectionner une réponse.";
+            result.style.color = "orange";
             return;
         }
 
+        if (selected.value === bonne_reponse) {
+            result.textContent = "Bonne réponse! Félicitations, vous avez complété ce chapitre! Vous pouvez retourner à la page cours";
+            result.style.color = "green";
 
-        if(selected.value === bonne_reponse){
-            result.textContent = "Bonne Réponse!"
-            result.style.color = "green"
+            // Disable further input
+            const radios = document.querySelectorAll('input[name="exo"]');
+            radios.forEach(radio => {
+                radio.disabled = true;
+            });
+
+            document.querySelector('button[type="submit"]').disabled = true;
+            document.getElementById("exercice-form").style.opacity = "0.6";
+            document.getElementById("exercice-form").style.pointerEvents = "none";
+
+            // Send progression update
+            fetch('/complete_chapitre', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id_user: idUser,
+                    id_chap: idChap,
+                    id_cours: idCours
+                })
+            }).then(res => {
+                if (!res.ok) {
+                    result.textContent += " ⚠️ Erreur lors de la mise à jour de la progression.";
+                }
+            });
+
         } else {
-            result.textContent = "Mauvaise Réponse, Réessayer"
-            result.style.color = "red"
+            result.textContent = "Mauvaise réponse, réessayez.";
+            result.style.color = "red";
         }
     });
-
 </script>
 {% endblock %}

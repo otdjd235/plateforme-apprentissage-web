@@ -114,5 +114,19 @@ def check_video_completed():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+
+def get_videos_chapitres(id_chap):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary = True)
+
+    cursor.execute("SELECT * FROM videoscours WHERE id_chap = %s", (id_chap,))
+    video = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+    
+    return video
+
 
 

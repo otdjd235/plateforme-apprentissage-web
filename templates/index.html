@@ -152,9 +152,11 @@
                         return;
                     }
 
-                    const isFavorited = this.classList.toggle("favorited");
+                    const isCurrentlyFavorited = this.classList.contains("favorited");
 
-                    if (isFavorited) {
+                    if (!isCurrentlyFavorited) {
+                        this.classList.add("favorited");
+
                         fetch('/suivre', {
                             method: 'POST',
                             headers: {
@@ -167,9 +169,21 @@
                                 alert("Erreur lors de l'ajout aux favoris");
                             }
                         });
+
                     } else {
+
+                        const confirmation = confirm("Êtes-vous sûr de vouloir arrêter de suivre ce cours ? Vous perdrez votre progression.");
+                        if (!confirmation) return;
+
+                        this.classList.remove("favorited");
+
                         fetch(`/suivre/${this.dataset.id}`, {
                             method: 'DELETE',
+                        }).then(res => {
+                            if (!res.ok) {
+                                this.classList.add("favorited");
+                                alert("Erreur lors de la suppression du suivi.");
+                            }
                         });
                     }
                 });
@@ -188,7 +202,6 @@
             });
         }
 
-        // Listeners pour recherche et filtres
         searchInput.addEventListener("input", () => {
             currentPage = 1;
             fetchCourses(true);

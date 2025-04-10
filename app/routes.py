@@ -2,7 +2,8 @@ from flask import render_template, request, redirect, url_for
 from app import app
 from app.db import get_db_connection
 from flask import session, jsonify
-from app.cours_routes import get_cours_chapitres, get_videos_chapitres
+from app.cours_routes import get_cours_chapitres, get_cours_completer_flag, get_chapitre_completed_map
+from app.videos_routes import get_videos_chapitres
 from app.suivre_routes import get_cours_suivi
 from app.exercices_routes import api_get_exercices_par_chapitres
 
@@ -58,6 +59,7 @@ def signup():
 
 @app.route('/cours/<int:cours_id>')
 def cours(cours_id):
+    user_id = session["user_id"]
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
@@ -79,11 +81,15 @@ def cours(cours_id):
         return "Cours non trouver", 404
     
     chapitres = get_cours_chapitres(cours_id)
+
+    chapitres_completed = get_chapitre_completed_map(user_id, chapitres)
     
-    return render_template("cours.html", cours=cours, chapitres=chapitres)
+    return render_template("cours.html", cours=cours, chapitres=chapitres, user_id=user_id, chapitres_completed=chapitres_completed)
 
 @app.route('/exercice/<int:id_chap>')
 def exercice(id_chap):
+    user_id = session["user_id"]
+
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
@@ -100,7 +106,9 @@ def exercice(id_chap):
 
     exercice = api_get_exercices_par_chapitres(id_chap)
 
-    return render_template('exercice.html', chapitre=chapitre, video=video, exercice=exercice)
+    completed = get_cours_completer_flag(user_id, id_chap)
+
+    return render_template('exercice.html', chapitre=chapitre, video=video, exercice=exercice, completed=completed, user_id=user_id)
 
 @app.route('/logout')
 def logout():

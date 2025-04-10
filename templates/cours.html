@@ -6,6 +6,12 @@
 <div class="container-cours">
     <h1 class="text-3xl font-bold mb-4 mt-4">{{ cours.nom_cours }}</h1>
 
+    <div id="follow-container" class="mb-4">
+        {% if user_logged_in %}
+            <button id="follow-btn" class="font-bold py-2 px-4 rounded transition"> </button>
+        {% endif %}
+    </div>
+
     <div class="description-container">
         <div class="description-box">
             <h1 class="text-xl font-bold px-2 pt-2">Description:</h1>
@@ -20,19 +26,167 @@
                 <h1 class="text-xl font-bold">Durée: </h1>
                 <h1 class="text-xl px-2">{{ cours.duree_totale }} minutes</h1>
             </div>
+            <div class="rating-box">
+                <h1 class="text-xl font-bold">Progression: </h1>
+                <h1 class="text-xl px-2" id="progression-display"></h1>
+            </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {% for chapitre in chapitres %}
-        <a href="{{ url_for('exercice', id_chap=chapitre.id_chap) }}"
-            class="relative rounded-lg overflow-hidden shadow-lg h-64 cursor-pointer hover:scale-105 transition-transform bg-sky-500/100">
-            <div class="text-3xl p-4 text-white">Chapitre {{ chapitre.ordre }}</div>
-            <div class="text-xl p-6 text-white">{{ chapitre.titre_chap }}</div>
-        </a>
-        {% endfor %}
+    <div class="mt-6">
+        <div id="access-warning" class="text-red-500 font-bold mb-4 hidden">
+            Vous devez suivre ce cours pour accéder aux chapitres.
+        </div>
+
+        <div id="chapitres-section" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {% for chapitre in chapitres %}
+                {% if chapitres_completed.get(chapitre.id_chap) %}
+                <div class="chapitre-card relative rounded-lg overflow-hidden shadow-lg h-64 bg-green-500/100 p-4 transition-transform">
+                    <div class="text-3xl text-white">Chapitre {{ chapitre.ordre }}</div>
+                    <div class="text-xl text-white mt-4">{{ chapitre.titre_chap }}</div>
+                    <div class="text-xl text-white mt-8">Statut: Complété</div>
+                    <a href="{{ url_for('exercice', id_chap=chapitre.id_chap) }}"
+                    class="chapitre-link absolute inset-0 z-10"
+                    style="display: none;"></a>
+                </div>
+                {% else %}
+                <div class="chapitre-card relative rounded-lg overflow-hidden shadow-lg h-64 bg-sky-500/100 p-4 transition-transform">
+                    <div class="text-3xl text-white">Chapitre {{ chapitre.ordre }}</div>
+                    <div class="text-xl text-white mt-4">{{ chapitre.titre_chap }}</div>
+                    <div class="text-xl text-white mt-8">Statut: En cours</div>
+                    <a href="{{ url_for('exercice', id_chap=chapitre.id_chap) }}"
+                    class="chapitre-link absolute inset-0 z-10"
+                    style="display: none;"></a>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
-
-
 </div>
+
+<style>
+    .chapitre-card {
+        position: relative;
+        opacity: 1;
+        cursor: pointer;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .chapitre-card.locked {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const followBtn = document.getElementById("follow-btn");
+        const userLoggedIn = {{ user_logged_in | tojson }};
+        const coursId = {{ cours.id_cours }};
+        const userId = {{ user_id | tojson }};
+
+        if (!userLoggedIn || !followBtn) return;
+
+        function updateFollowButton(isFollowing) {
+            if (isFollowing) {
+                followBtn.textContent = "Ne plus suivre ce cours";
+                followBtn.classList.remove("bg-green-500");
+                followBtn.classList.add("bg-red-500", "text-white");
+            } else {
+                followBtn.textContent = "Suivre ce cours";
+                followBtn.classList.remove("bg-red-500");
+                followBtn.classList.add("bg-green-500", "text-white");
+            }
+            followBtn.dataset.following = isFollowing;
+        }
+
+        function updateChaptersAccess(isFollowing) {
+            const warning = document.getElementById("access-warning");
+            const chapterCards = document.querySelectorAll(".chapitre-card");
+            const chapterLinks = document.querySelectorAll(".chapitre-link");
+
+            if (isFollowing) {
+                warning.classList.add("hidden");
+                chapterCards.forEach(card => card.classList.remove("locked"));
+                chapterLinks.forEach(link => link.style.display = "block");
+            } else {
+                warning.classList.remove("hidden");
+                chapterCards.forEach(card => card.classList.add("locked"));
+                chapterLinks.forEach(link => link.style.display = "none");
+            }
+        }
+
+        function fetchAndDisplayProgression(userId, coursId) {
+            fetch(`/suivre/progression?id_user=${userId}&id_cours=${coursId}`)
+                .then(res => res.json())
+                .then(data => {
+                    const progressionEl = document.getElementById("progression-display");
+                    progressionEl.textContent = `${data.progression} %`;
+                })
+                .catch(() => {
+                    document.getElementById("progression-display").textContent = "Erreur";
+                });
+        }
+
+        fetch("/api/cours_suivi")
+            .then(response => response.json())
+            .then(data => {
+                const isFollowing = data.some(c => c.id_cours === coursId);
+                updateFollowButton(isFollowing);
+                updateChaptersAccess(isFollowing);
+                if (isFollowing) {
+                    fetchAndDisplayProgression(userId, coursId);
+                } else {
+                    document.getElementById("progression-display").textContent = "Non disponible";
+                }
+            });
+
+        followBtn.addEventListener("click", function () {
+            const isCurrentlyFollowing = this.dataset.following === "true";
+
+            if (isCurrentlyFollowing) {
+                const confirmation = confirm("Êtes-vous sûr de vouloir arrêter de suivre ce cours? Vous perdrez votre progression.");
+                if (!confirmation) return;
+
+                fetch(`/suivre/${coursId}`, { method: 'DELETE' })
+                    .then(res => {
+                        if (res.ok) {
+                            updateFollowButton(false);
+                            updateChaptersAccess(false);
+                            document.getElementById("progression-display").textContent = "Non disponible";
+
+                            const chapterCards = document.querySelectorAll(".chapitre-card");
+                            chapterCards.forEach(card => {
+                                card.classList.remove("bg-green-500/100");
+                                card.classList.add("bg-sky-500/100");
+
+                                const statusText = card.querySelector(".text-xl.mt-8");
+                                if (statusText) {
+                                    statusText.textContent = "Statut: En cours";
+                                }
+                            });
+                        } else {
+                            alert("Erreur lors de l'arrêt du suivi.");
+                        }
+                    });
+            } else {
+                fetch('/suivre', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ id_cours: coursId })
+                }).then(res => {
+                    if (res.ok) {
+                        updateFollowButton(true);
+                        updateChaptersAccess(true);
+                        fetchAndDisplayProgression(userId, coursId);
+                    } else {
+                        alert("Erreur lors de l'ajout au suivi.");
+                    }
+                });
+            }
+        });
+    });
+</script>
 {% endblock %}

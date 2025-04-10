@@ -33,7 +33,7 @@ def suivre_cours():
         return jsonify({ 'message' : 'User is now following cours'})
     except IntegrityError as e:
         error_message = str(e)
-        print("🔴 IntegrityError:", error_message)
+        print("IntegrityError:", error_message)
         if "a foreign key constraint fails" in error_message:
             if "`suivre_ibfk_1`" in error_message:
                 return jsonify({'error': 'User does not exist'}), 400
@@ -71,12 +71,34 @@ def get_cours_suivi_par_user(id_user):
 def remove_cours_suivi(id_cours):
     if 'user_id' not in session:
         return jsonify({ 'error': 'User must be logged in'}), 401
-    
+
     id_user = session['user_id']
 
     try:
         connection = get_db_connection()
-        cursor = connection.cursor()
+        cursor = connection.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT id_chap FROM chapitres
+            WHERE id_cours = %s
+        """, (id_cours,))
+        chapitres = cursor.fetchall()
+        chapitre_ids = [chap["id_chap"] for chap in chapitres]
+
+        if chapitre_ids:
+            placeholders = ','.join(['%s'] * len(chapitre_ids))
+            cursor.execute(f"""
+                SELECT COUNT(*) AS completed_count
+                FROM chapitres_complete
+                WHERE id_user = %s AND id_chap IN ({placeholders})
+            """, [id_user] + chapitre_ids)
+            completed_count = cursor.fetchone()["completed_count"]
+
+            if completed_count > 0:
+                cursor.execute(f"""
+                    DELETE FROM chapitres_complete
+                    WHERE id_user = %s AND id_chap IN ({placeholders})
+                """, [id_user] + chapitre_ids)
 
         cursor.execute("""
             DELETE FROM suivre
@@ -87,21 +109,22 @@ def remove_cours_suivi(id_cours):
         cursor.close()
         connection.close()
 
-        return jsonify({ 'message': 'User ne suit plus le cours'}), 200
-    
+        return jsonify({ 'message': 'User ne suit plus le cours, progression supprimée' }), 200
+
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
     
+
 def get_cours_suivi(id_user):
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT cours.*
-        FROM cours
-        JOIN suivre ON cours.id_cours = suivre.id_cours
-        WHERE suivre.id_user = %s
+        SELECT c.*, d.nom_dom AS nom_domaine
+        FROM cours c
+        JOIN suivre s ON c.id_cours = s.id_cours
+        JOIN discipline d ON c.id_domaine = d.id_domaine
+        WHERE s.id_user = %s
     """, (id_user,))
 
     cours_suivis = cursor.fetchall()
