@@ -15,7 +15,7 @@
         <h1 class="text-3xl ml-3 mt-4 mb-4">Chapitre {{ chapitre.ordre }}</h1>
     </div>
 
-    <!-- ✅ Remplacement de l’iframe YouTube par un lecteur contrôlable -->
+   
     <div id="player"></div>
 
     <div class="exercices" id="exercice">
@@ -24,7 +24,7 @@
 
         {% if completed %}
             <div class="text-green-600 font-semibold mb-4">
-                ✅ Vous avez déjà complété ce chapitre.
+            
             </div>
         {% endif %}
 
@@ -64,13 +64,13 @@
     </div>
 </div>
 
-<!-- ✅ Ajout de l’API YouTube et extraction propre de l’ID -->
+
 <script src="https://www.youtube.com/iframe_api"></script>
 
 <script>
     let player;
 
-    // 🔁 Extraction sécurisée de l’ID de la vidéo (dans le backend avec Jinja)
+    
     const videoId = "{{ video.url_video.split('v=')[-1].split('&')[0] }}";
 
     function onYouTubeIframeAPIReady() {
@@ -86,7 +86,7 @@
 
     function onPlayerStateChange(event) {
         if (event.data === YT.PlayerState.ENDED) {
-            // ✅ Vidéo terminée = mise à jour de progression
+          
             fetch('/videos_complete', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -97,13 +97,13 @@
             })
             .then(res => res.json())
             .then(data => {
-                console.log("✅ Vidéo complétée :", data.message || data.error);
+                console.log(" Vidéo complétée :", data.message || data.error);
             });
         }
     }
 </script>
 
-<!-- ✅ Script pour l’exercice (inchangé) -->
+
 <script>
     document.getElementById('exercice-form')?.addEventListener("submit", function(e) {
         e.preventDefault();
@@ -145,7 +145,7 @@
                 })
             }).then(res => {
                 if (!res.ok) {
-                    result.textContent += " ⚠️ Erreur lors de la mise à jour de la progression.";
+                    result.textContent += "  Erreur lors de la mise à jour de la progression.";
                 }
             });
 
