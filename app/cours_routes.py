@@ -144,7 +144,6 @@ def get_cours_completer_flag(user_id, id_chap):
 
     return completed
 
-#Prend en parametre listes de chapitres associer au cours qui a deja ete chercher avant
 def get_chapitre_completed_map(id_user, chapitres):
     connection = get_db_connection()
     cursor = connection.cursor()

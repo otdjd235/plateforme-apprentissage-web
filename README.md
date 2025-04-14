@@ -1,14 +1,14 @@
-# 📄 Guide de Configuration de l'Environnement de Développement
+#  Guide de Configuration de l'Environnement de Développement
 
 Ce fichier explique comment préparer votre environnement pour exécuter ce projet Flask + MySQL.
 
 ---
 
-## 🛠 1. Installer les Dépendances
+##  1. Installer les Dépendances
 
 Avant de commencer, assurez-vous d'avoir **Python** et **MySQL** installés sur votre machine.
 
-### 📌 Installation des Packages Python
+###  Installation des Packages Python
 
 1. Assurez-vous d'utiliser **Python 3.8+**
 2. Installez les dépendances requises avec :
@@ -16,7 +16,7 @@ Avant de commencer, assurez-vous d'avoir **Python** et **MySQL** installés sur 
    pip install -r requirements.txt
    ```
 
-### 📌 Installation de MySQL
+###  Installation de MySQL
 
 - **Windows** : Installez MySQL via [MySQL Installer](https://dev.mysql.com/downloads/installer/)
 - **macOS** :
@@ -36,7 +36,7 @@ mysql -u root -p
 
 ---
 
-## 📄 2. Configurer le Fichier `.env`
+##  2. Configurer le Fichier `.env`
 
 Le projet utilise un fichier `.env` pour stocker les variables sensibles. Créez un fichier `.env` à la racine du projet et ajoutez :
 
@@ -54,7 +54,7 @@ Remplacez `your_password` et `your_database` par vos informations réelles.
 
 ---
 
-## 🛢 3. Créer la Base de Données
+##  3. Créer la Base de Données
 
 1. Ouvrez MySQL :
    ```sh
@@ -68,7 +68,7 @@ Remplacez `your_password` et `your_database` par vos informations réelles.
 
 ---
 
-## 🚀 4. Appliquer les Migrations SQL
+##  4. Appliquer les Migrations SQL
 
 Une fois la base de données créée, appliquez les migrations existantes :
 
@@ -86,7 +86,7 @@ Cela exécutera tous les fichiers `.sql` du dossier `database/` pour initialiser
 
 ---
 
-## 🏃 5. Lancer l'Application Flask
+##  5. Lancer l'Application Flask
 
 Après avoir configuré votre base de données, lancez l’application :
 
@@ -98,7 +98,7 @@ Puis ouvrez [**http://127.0.0.1:5000/**](http://127.0.0.1:5000/) dans votre navi
 
 ---
 
-## ✅ Récapitulatif
+##  Récapitulatif
 
 | Étape                         | Commande                                           |
 | ----------------------------- | -------------------------------------------------- |

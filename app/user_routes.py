@@ -35,7 +35,6 @@ def delete_user(user_id):
         connection = get_db_connection()
         cursor = connection.cursor()
 
-        # Check if the user exists
         cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
         user = cursor.fetchone()
 
@@ -44,7 +43,6 @@ def delete_user(user_id):
             connection.close()
             return jsonify({'error': 'User not found'}), 404
 
-        # Delete the user
         cursor.execute("DELETE FROM users WHERE id = %s", (user_id,))
         connection.commit()
         cursor.close()
@@ -102,7 +100,7 @@ def login():
 
 @app.route('/signup', methods=['POST'])
 def sign_up():
-    data = request.get_json() #Json du formulaire d'entree
+    data = request.get_json()
     username = data.get('username')
     email = data.get('email')
     tel = data.get('tel')
@@ -125,9 +123,6 @@ def sign_up():
         
         user_id = cursor.lastrowid
         
-        #AJOUT DU USER DANS SA TABLE CORRESPONDANTE EN FONCTION DE SON ROLE
-
-         # ✅ Insérer dans la table selon le rôle
         if role == 'etudiant':
             cursor.execute("INSERT INTO etudiants (id_user) VALUES (%s)", (user_id,))
         elif role == 'prof':

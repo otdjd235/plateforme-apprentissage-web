@@ -1,12 +1,12 @@
-# 📄 Guide de Gestion des Migrations SQL
+#  Guide de Gestion des Migrations SQL
 
 Ce fichier explique comment ajouter des changements à la base de données, comment les pousser sur GitHub et comment appliquer les changements des coéquipiers sur votre base de données locale.
 
 ---
 
-## 🛠 1. Ajouter un Nouveau Changement dans la Base de Données
+##  1. Ajouter un Nouveau Changement dans la Base de Données
 
-### 📌 Création d'un fichier SQL pour une migration
+###  Création d'un fichier SQL pour une migration
 1. Accédez au dossier `database/`.
 2. Créez un nouveau fichier SQL avec un numéro incrémental:
    ```sh
@@ -25,7 +25,7 @@ Ce fichier explique comment ajouter des changements à la base de données, comm
 
 ---
 
-## 🔄 2. Pousser vos Changements sur GitHub
+##  2. Pousser vos Changements sur GitHub
 
 1. Ajoutez le fichier SQL au suivi Git :
    ```sh
@@ -42,7 +42,7 @@ Ce fichier explique comment ajouter des changements à la base de données, comm
 
 ---
 
-## 🔽 3. Appliquer les Changements d'un Coéquipier
+##  3. Appliquer les Changements d'un Coéquipier
 
 1. Récupérez les dernières modifications :
    ```sh
@@ -63,7 +63,7 @@ Ce fichier explique comment ajouter des changements à la base de données, comm
 
 ---
 
-## ✅ Récapitulatif
+##  Récapitulatif
 
 | Action | Commandes |
 |--------|----------|

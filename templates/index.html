@@ -80,8 +80,6 @@
                     .then(response => response.json())
                     .then(data => {
                         coursesData = coursesData.concat(data.data);
-
-                        // ✅ Deduplicate based on id_cours
                         const seen = new Map();
                         coursesData.forEach(c => seen.set(c.id_cours, c));
                         coursesData = Array.from(seen.values());

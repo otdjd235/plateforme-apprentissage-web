@@ -81,7 +81,7 @@
     const confirm_password_input = document.getElementById('confirm_password')
 
     form.addEventListener('submit', (e) => {
-      e.preventDefault();  // ALWAYS prevent the default
+      e.preventDefault();
       console.log('Submit pressed');
 
       document.querySelectorAll('.incorrect').forEach(el => el.classList.remove('incorrect'));
