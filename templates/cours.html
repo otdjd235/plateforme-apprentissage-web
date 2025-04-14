@@ -166,20 +166,21 @@
                 fetch(`/suivre/${coursId}`, { method: 'DELETE' })
                     .then(res => {
                         if (res.ok) {
-                            updateFollowButton(false);
-                            updateChaptersAccess(false);
-                            document.getElementById("progression-display").textContent = "Non disponible";
+                            //updateFollowButton(false);
+                            //updateChaptersAccess(false);
+                            //document.getElementById("progression-display").textContent = "Non disponible";
 
-                            const chapterCards = document.querySelectorAll(".chapitre-card");
-                            chapterCards.forEach(card => {
-                                card.classList.remove("bg-green-500/100");
-                                card.classList.add("bg-sky-500/100");
+                            //const chapterCards = document.querySelectorAll(".chapitre-card");
+                            //chapterCards.forEach(card => {
+                                //card.classList.remove("bg-green-500/100");
+                                //card.classList.add("bg-sky-500/100");
 
-                                const statusText = card.querySelector(".text-xl.mt-8");
-                                if (statusText) {
-                                    statusText.textContent = "Statut: En cours";
-                                }
-                            });
+                                //const statusText = card.querySelector(".text-xl.mt-8");
+                                //if (statusText) {
+                                    //statusText.textContent = "Statut: En cours";
+                                //}
+                            //});
+                            location.reload();
                         } else {
                             alert("Erreur lors de l'arrêt du suivi.");
                         }
