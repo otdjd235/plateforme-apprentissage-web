@@ -33,13 +33,6 @@
             <label for="birthdate" class="label">Date de naissance</label>
           </div>
 
-          <div class="inputContainer">
-            <select id="role" name="role">
-              <option value="etudiant">Etudiant</option>
-              <option value="prof">Professeur</option>
-            </select>
-            <label for="role" class="label">Role</label>
-          </div>
     
           <div class="inputContainer">
             <input type="password" class="input" name="password" id="password" onkeyup='check();'>
@@ -59,6 +52,11 @@
         </form>
       </div>
 <script>
+
+  if (localStorage.getItem("darkMode") === "true") {
+      document.body.classList.add("dark-mode");
+  }
+  
     function check() {
         if(document.getElementById('password').value == document.getElementById('confirm_password').value){
             document.getElementById('message').style.color='green';
@@ -79,7 +77,6 @@
     const phone_input = document.getElementById('phone')
     const username_input = document.getElementById('username')
     const birthdate_input = document.getElementById('birthdate')
-    const role_input = document.getElementById('role')
     const password_input = document.getElementById('password')
     const confirm_password_input = document.getElementById('confirm_password')
 
@@ -91,7 +88,7 @@
 
       const errors = getSignUpFormErrors(
         email_input, phone_input, username_input, 
-        birthdate_input, role_input, password_input, confirm_password_input
+        birthdate_input, password_input, confirm_password_input
       );
 
       if (errors.length > 0) {
@@ -103,7 +100,7 @@
         tel: phone_input.value,
         username: username_input.value,
         date_naissance: birthdate_input.value,
-        role: role_input.value,
+        role: "etudiant",
         mot_de_passe: password_input.value,
       };
 
@@ -128,7 +125,7 @@
         .catch(error => console.error('Error:', error));
     });
 
-    function getSignUpFormErrors(email, phone, username, birthdate, role, password, confirm_password) {
+    function getSignUpFormErrors(email, phone, username, birthdate, password, confirm_password) {
       let errors = [];
 
       if (email.value.trim() === '') {
@@ -150,11 +147,6 @@
       if (birthdate.value.trim() === '') {
         errors.push('Birthdate is required');
         birthdate.parentElement.classList.add('incorrect');
-      }
-
-      if (role.value.trim() === '') {
-        errors.push('Role is required');
-        role.parentElement.classList.add('incorrect');
       }
 
       if (password.value.trim() === '' || password.value.length < 6) {

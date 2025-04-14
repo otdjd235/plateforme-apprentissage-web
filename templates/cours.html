@@ -53,14 +53,14 @@
         <div id="chapitres-section" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {% for chapitre in chapitres %}
                 {% if chapitres_completed.get(chapitre.id_chap) %}
-                <div class="chapitre-card relative rounded-lg overflow-hidden shadow-lg h-64 bg-green-500/100 p-4 transition-transform">
-                    <div class="text-3xl text-white">Chapitre {{ chapitre.ordre }}</div>
-                    <div class="text-xl text-white mt-4">{{ chapitre.titre_chap }}</div>
-                    <div class="text-xl text-white mt-8">Statut: Complété</div>
+                <div class="chapitre-card relative rounded-lg overflow-hidden shadow-lg h-64 completed p-4 transition-transform">
+                    <div class="text-3xl statut-text">Chapitre {{ chapitre.ordre }}</div>
+                    <div class="text-xl statut-text mt-4">{{ chapitre.titre_chap }}</div>
+                    <div class="text-xl statut-text mt-8">Statut: Complété</div>
                     <a href="{{ url_for('exercice', id_chap=chapitre.id_chap) }}" class="chapitre-link absolute inset-0 z-10"></a>
                 </div>
                 {% else %}
-                <div class="chapitre-card relative rounded-lg overflow-hidden shadow-lg h-64 bg-sky-500/100 p-4 transition-transform">
+                <div class="chapitre-card relative rounded-lg overflow-hidden shadow-lg h-64 in-progress p-4 transition-transform">
                     <div class="text-3xl text-white">Chapitre {{ chapitre.ordre }}</div>
                     <div class="text-xl text-white mt-4">{{ chapitre.titre_chap }}</div>
                     <div class="text-xl text-white mt-8">Statut: En cours</div>

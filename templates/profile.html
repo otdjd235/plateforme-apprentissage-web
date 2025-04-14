@@ -14,7 +14,7 @@
     <div class="section" id="profile-section">
         <div class="card small">
             <img src="https://cdn-icons-png.flaticon.com/512/9706/9706583.png" width="300" height="300" class="profile-img">
-            <div class="username">{{ user.username }}</div>
+            <div class="text-3xl">{{ user.username }}</div>
             <div>{{ user.role }}</div>
         </div>
         <div class="card large">
@@ -59,7 +59,7 @@
     <div class="section hidden" id="completed-section" style="display:block;">
         <div class="course-grid">
         {% for cours in cours_completes %}
-            <div class="course-card" style="background-color: #7fcd55;">
+            <div class="course-card">
                 <a href="/cours/{{ cours.id_cours }}" class="course-link">
                     <div class="course-content">
                         <strong>{{ cours.nom_cours }}</strong>

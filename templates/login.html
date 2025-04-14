@@ -41,6 +41,11 @@
         </form>
       </div>
 <script>
+
+if (localStorage.getItem("darkMode") === "true") {
+      document.body.classList.add("dark-mode");
+}
+
 function goBack() {
   window.location.href = "{{ url_for('home') }}";
 }
