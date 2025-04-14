@@ -4,7 +4,6 @@ from app.db import get_db_connection
 # Création du Blueprint pour les routes liées aux disciplines
 disciplines_bp = Blueprint('disciplines', __name__)
 
-# 🔹 Route : récupérer toutes les disciplines
 @disciplines_bp.route('/api/disciplines', methods=['GET'])
 def get_all_disciplines():
     connection = get_db_connection()
@@ -18,7 +17,6 @@ def get_all_disciplines():
 
     return jsonify(disciplines), 200
 
-# 🔹 Route : récupérer tous les cours d'une discipline
 @disciplines_bp.route('/api/<int:id_discipline>/cours', methods=['GET'])
 def get_cours_by_discipline(id_discipline):
     connection = get_db_connection()
