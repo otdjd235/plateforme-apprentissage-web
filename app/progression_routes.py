@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, json
 from app.db import get_db_connection
 
 progression_bp = Blueprint('progression', __name__)
@@ -101,4 +101,28 @@ def is_cours_completed(id_user, id_cours):
     connection.close()
 
     return result is not None
-    
+
+def get_user_stats(user_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    cursor.execute("SELECT userLearningStats(%s) AS stats", (user_id,))
+    stats_result = cursor.fetchone()
+    stats = json.loads(stats_result['stats']) if stats_result else {}
+
+    cursor.close()
+    connection.close()
+
+    return stats;
+
+def get_cours_stats(cours_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    cursor.execute("SELECT totalUserFollowingClass(%s) AS followers", (cours_id,))
+    result = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    return result['followers'] if result else 0

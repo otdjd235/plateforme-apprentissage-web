@@ -23,6 +23,12 @@
             <div class="profile-info">Courriel: {{ user.email }}</div>
             <div class="profile-info">Téléphone: {{ user.tel }}</div>
             <div class="profile-info">Date de naissance: {{ user.date_naissance }}</div>
+
+            <hr style="margin: 15px 0;">
+            <div style="font-size: 20px; font-weight: bold;">Statistiques d'apprentissage</div>
+            <div class="profile-info">Cours complétés : {{ stats.cours_complete }}</div>
+            <div class="profile-info">Chapitres complétés : {{ stats.chapitres_complete }}</div>
+            <div class="profile-info">Cours suivis actuellement : {{ stats.cours_suivis }}</div>
         </div>
     </div>
 

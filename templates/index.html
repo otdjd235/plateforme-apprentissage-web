@@ -118,9 +118,6 @@
 
                 const courseCard = document.createElement('div');
                 courseCard.classList.add('course-card');
-                if (completed) {
-                    courseCard.style.backgroundColor = '#7fcd55';
-                }
 
                 courseCard.innerHTML = `
                     <a href="/cours/${course.id_cours}" class="course-link">
@@ -129,7 +126,7 @@
                             <p>${course.description_courte}</p>
                             <span class="discipline">Discipline : ${course.nom_domaine}</span>
                             <span class="duration">Durée : ${course.duree_totale} minutes</span>
-                            ${completed ? '<div class="text-green-700 font-bold mt-2">✅ Cours complété</div>' : ''}
+                            ${completed ? '<div class="text-white-700 font-bold mt-2">✅ Cours complété</div>' : ''}
                             ${!completed && userLoggedIn ? `
                                 <div class="favorite-container">
                                     <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" data-id="${course.id_cours}">&#9733;</button>

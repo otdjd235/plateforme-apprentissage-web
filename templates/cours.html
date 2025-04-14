@@ -33,6 +33,10 @@
                 <h1 class="text-xl px-2">{{ cours.duree_totale }} minutes</h1>
             </div>
             <div class="rating-box">
+                <h1 class="text-xl font-bold">Utilisateur qui suivent ce cours:  </h1>
+                <h1 class="text-xl px-2">{{ followers }}</h1>
+            </div>
+            <div class="rating-box">
                 <h1 class="text-xl font-bold">Progression: </h1>
                 <h1 class="text-xl px-2" id="progression-display">
                     {% if is_completed %}100 %{% endif %}
