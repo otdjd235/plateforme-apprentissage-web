@@ -167,6 +167,9 @@ DELIMITER ;;
             INSERT INTO cours_complete (id_user, id_cours)
             VALUES (NEW.id_user, course_id);
         END IF;
+
+        DELETE FROM suivre
+        WHERE id_user = NEW.id_user AND id_cours = course_id;
     END IF;
 END */;;
 DELIMITER ;

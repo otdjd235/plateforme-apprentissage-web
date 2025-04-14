@@ -42,17 +42,24 @@
         const userLoggedIn = {{ user_logged_in | tojson }};
         let coursesData = [];
         let favoritesData = [];
+        let completedData = [];
         let currentPage = 1;
         const coursPerPage = 10;
         let totalCourses = null;
 
-        function fetchFavoris() {
-            fetch('/api/cours_suivi')
-                .then(response => response.json())
-                .then(data => {
-                    favoritesData = data;
-                    fetchCourses(true);
-                });
+        function fetchFavorisEtComplete() {
+            Promise.all([
+                fetch('/api/cours_suivi').then(res => res.json()),
+                fetch('/api/cours_complete').then(res => res.json())
+            ]).then(([favoris, completes]) => {
+                favoritesData = favoris;
+                completedData = completes;
+                fetchCourses(true);
+            });
+        }
+
+        function isCompleted(id) {
+            return completedData.some(c => c.id_cours === id);
         }
 
         function fetchCourses(refresh = false) {
@@ -76,15 +83,11 @@
                         totalCourses = data.cours_total;
 
                         if (hasFilter && coursesData.length < totalCourses) {
-                            return fetchPage(page + 1); // Continue jusqu’à tout charger
+                            return fetchPage(page + 1);
                         } else {
                             currentPage = page;
                             displayCourses();
-                            if (coursesData.length >= totalCourses) {
-                                loadMoreButton.style.display = "none";
-                            } else {
-                                loadMoreButton.style.display = "block";
-                            }
+                            loadMoreButton.style.display = (coursesData.length >= totalCourses) ? "none" : "block";
                         }
                     });
             };
@@ -98,10 +101,8 @@
             let filteredCourses = coursesData.filter(course => {
                 const searchText = searchInput.value.toLowerCase();
                 const disciplineFilter = filterDiscipline.value;
-
                 const matchesSearch = course.nom_cours.toLowerCase().includes(searchText);
                 const matchesDiscipline = disciplineFilter === "" || course.nom_domaine === disciplineFilter;
-
                 return matchesSearch && matchesDiscipline;
             });
 
@@ -112,8 +113,15 @@
             }
 
             filteredCourses.forEach(course => {
+                const completed = isCompleted(course.id_cours);
+                const isFavorite = favoritesData.some(f => f.id_cours === course.id_cours);
+
                 const courseCard = document.createElement('div');
                 courseCard.classList.add('course-card');
+                if (completed) {
+                    courseCard.style.backgroundColor = '#7fcd55';
+                }
+
                 courseCard.innerHTML = `
                     <a href="/cours/${course.id_cours}" class="course-link">
                         <div class="course-content">
@@ -121,19 +129,16 @@
                             <p>${course.description_courte}</p>
                             <span class="discipline">Discipline : ${course.nom_domaine}</span>
                             <span class="duration">Durée : ${course.duree_totale} minutes</span>
-                            <div class="favorite-container">
-                                <button class="favorite-btn" data-id="${course.id_cours}">&#9733;</button>
-                            </div>
+                            ${completed ? '<div class="text-green-700 font-bold mt-2">✅ Cours complété</div>' : ''}
+                            ${!completed && userLoggedIn ? `
+                                <div class="favorite-container">
+                                    <button class="favorite-btn ${isFavorite ? 'favorited' : ''}" data-id="${course.id_cours}">&#9733;</button>
+                                </div>` : ''}
                         </div>
                     </a>
                 `;
+
                 courseListElement.appendChild(courseCard);
-
-                const favoriteBtn = courseCard.querySelector('.favorite-btn');
-
-                if (favoritesData.some(f => f.id_cours === course.id_cours)) {
-                    favoriteBtn.classList.add('favorited');
-                }
             });
 
             addFavoriteButtonListeners();
@@ -159,9 +164,7 @@
 
                         fetch('/suivre', {
                             method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
+                            headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ id_cours: this.dataset.id })
                         }).then(res => {
                             if (!res.ok) {
@@ -169,17 +172,13 @@
                                 alert("Erreur lors de l'ajout aux favoris");
                             }
                         });
-
                     } else {
-
                         const confirmation = confirm("Êtes-vous sûr de vouloir arrêter de suivre ce cours ? Vous perdrez votre progression.");
                         if (!confirmation) return;
 
                         this.classList.remove("favorited");
 
-                        fetch(`/suivre/${this.dataset.id}`, {
-                            method: 'DELETE',
-                        }).then(res => {
+                        fetch(`/suivre/${this.dataset.id}`, { method: 'DELETE' }).then(res => {
                             if (!res.ok) {
                                 this.classList.add("favorited");
                                 alert("Erreur lors de la suppression du suivi.");
@@ -202,27 +201,15 @@
             });
         }
 
-        searchInput.addEventListener("input", () => {
-            currentPage = 1;
-            fetchCourses(true);
-        });
-
-        filterDiscipline.addEventListener("change", () => {
-            currentPage = 1;
-            fetchCourses(true);
-        });
-
-        sortDuration.addEventListener("change", () => {
-            currentPage = 1;
-            fetchCourses(true);
-        });
-
+        searchInput.addEventListener("input", () => fetchCourses(true));
+        filterDiscipline.addEventListener("change", () => fetchCourses(true));
+        sortDuration.addEventListener("change", () => fetchCourses(true));
         loadMoreButton.addEventListener("click", () => {
             currentPage++;
             fetchCourses();
         });
 
-        fetchFavoris();
+        fetchFavorisEtComplete();
     });
 </script>
 

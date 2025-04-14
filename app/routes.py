@@ -2,7 +2,8 @@ from flask import render_template, request, redirect, url_for
 from app import app
 from app.db import get_db_connection
 from flask import session, jsonify
-from app.cours_routes import get_cours_chapitres, get_cours_completer_flag, get_chapitre_completed_map
+from app.cours_routes import get_cours_chapitres, get_cours_completer_flag, get_chapitre_completed_map, is_all_chapitres_completed, get_cours_completes_profile
+from app.progression_routes import is_cours_completed
 from app.videos_routes import get_videos_chapitres
 from app.suivre_routes import get_cours_suivi
 from app.exercices_routes import api_get_exercices_par_chapitres
@@ -47,7 +48,9 @@ def profile():
 
     cours_suivi = get_cours_suivi(session.get('user_id'))
 
-    return render_template('profile.html', user=user_data, cours_suivi=cours_suivi)
+    cours_completes = get_cours_completes_profile(session.get('user_id'))
+
+    return render_template('profile.html', user=user_data, cours_suivi=cours_suivi, cours_completes=cours_completes)
 
 @app.route('/login')
 def login_api():
@@ -81,10 +84,11 @@ def cours(cours_id):
         return "Cours non trouver", 404
     
     chapitres = get_cours_chapitres(cours_id)
-
     chapitres_completed = get_chapitre_completed_map(user_id, chapitres)
+    is_completed = is_cours_completed(user_id, cours_id)
+    is_all_completed = is_all_chapitres_completed(user_id, chapitres)
     
-    return render_template("cours.html", cours=cours, chapitres=chapitres, user_id=user_id, chapitres_completed=chapitres_completed)
+    return render_template("cours.html", cours=cours, chapitres=chapitres, user_id=user_id, chapitres_completed=chapitres_completed, is_completed=is_completed, is_all_completed=is_all_completed)
 
 @app.route('/exercice/<int:id_chap>')
 def exercice(id_chap):

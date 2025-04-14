@@ -3,106 +3,129 @@
 {% block title %}Profile - My Website{% endblock %}
 
 {% block content %}
-    <div class="container">
-        <div class="sidebar">
-            <a class="active" href="{{ url_for('profile') }}" id="profile-tab">&#128100 Profil</a>
-            <a href="#" id="favorites-tab">&#x1F4DA Cours Suivis</a>
-            <a href="#" id="setting-tab">&#9881 Profile Settings</a>
-        </div>
+<div class="container">
+    <div class="sidebar">
+        <a class="active" href="{{ url_for('profile') }}" id="profile-tab">&#128100 Profil</a>
+        <a href="#" id="favorites-tab">&#x1F4DA Cours Suivis</a>
+        <a href="#" id="completed-tab">&#9989 Cours Complétés</a>
+        <a href="#" id="setting-tab">&#9881 Profile Settings</a>
+    </div>
 
-        <div class="section" id="profile-section">
-            <div class="card small">
-                <img src="https://cdn-icons-png.flaticon.com/512/9706/9706583.png" width="300" height="300" class="profile-img">
-                <div class="username">{{ user.username }}</div>
-                <div>{{ user.role }}</div>
-            </div>
-            <div class="card large">
-                <div style="font-size: 24px; padding-bottom: 10px; font-weight: bold;">Informations du profil</div>
-                <div class="profile-info">Nom d'utilisateur: {{ user.username }}</div>
-                <div class="profile-info">Courriel: {{ user.email }}</div>
-                <div class="profile-info">Telephone: {{ user.tel }}</div>
-                <div class="profile-info">Date de naissance: {{ user.date_naissance }}</div>
-            </div>
+    <div class="section" id="profile-section">
+        <div class="card small">
+            <img src="https://cdn-icons-png.flaticon.com/512/9706/9706583.png" width="300" height="300" class="profile-img">
+            <div class="username">{{ user.username }}</div>
+            <div>{{ user.role }}</div>
         </div>
-
-        <div class="section hidden" id="favorite-section" style="display:block;">
-            <div class="course-grid">
-            {% for cours in cours_suivi %}
-                <div class="course-card">
-                    <a href="/cours/{{ cours.id_cours }}" class="course-link">
-                        <div class="course-content">
-                            <strong> {{ cours.nom_cours }}</strong>
-                            <p> {{ cours.description_courte }} </p>
-                            <span class="discipline">Discipline : {{cours.nom_domaine}} </span>
-                            <span class="duration">Durée : {{cours.duree_totale}} minutes</span>
-                            <div class="favorite-container">
-                                <button class="favorite-btn favorited" data-id="{{ cours.id_cours }}">&#9733;</button>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            {% else %}
-            <div class="no-favorites-message" style="text-align: center; width: 100%; padding: 20px;">
-                Aucun cours favoris...
-            </div>
-            {% endfor %}
-            </div>
+        <div class="card large">
+            <div style="font-size: 24px; padding-bottom: 10px; font-weight: bold;">Informations du profil</div>
+            <div class="profile-info">Nom d'utilisateur: {{ user.username }}</div>
+            <div class="profile-info">Courriel: {{ user.email }}</div>
+            <div class="profile-info">Téléphone: {{ user.tel }}</div>
+            <div class="profile-info">Date de naissance: {{ user.date_naissance }}</div>
         </div>
     </div>
 
-    <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const tabs = {
-            "profile-tab": "profile-section",
-            "favorites-tab": "favorite-section"
-        };
+    <div class="section hidden" id="favorite-section" style="display:block;">
+        <div class="course-grid">
+        {% for cours in cours_suivi %}
+            <div class="course-card">
+                <a href="/cours/{{ cours.id_cours }}" class="course-link">
+                    <div class="course-content">
+                        <strong>{{ cours.nom_cours }}</strong>
+                        <p>{{ cours.description_courte }}</p>
+                        <span class="discipline">Discipline : {{ cours.nom_domaine }}</span>
+                        <span class="duration">Durée : {{ cours.duree_totale }} minutes</span>
+                        <div class="favorite-container">
+                            <button class="favorite-btn favorited" data-id="{{ cours.id_cours }}">&#9733;</button>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        {% else %}
+            <div class="no-favorites-message" style="text-align: center; width: 100%; padding: 20px;">
+                Aucun cours suivis...
+            </div>
+        {% endfor %}
+        </div>
+    </div>
 
-        Object.keys(tabs).forEach(tabId => {
-            document.getElementById(tabId).addEventListener("click",  function(e) {
-                e.preventDefault();
+    <div class="section hidden" id="completed-section" style="display:block;">
+        <div class="course-grid">
+        {% for cours in cours_completes %}
+            <div class="course-card" style="background-color: #7fcd55;">
+                <a href="/cours/{{ cours.id_cours }}" class="course-link">
+                    <div class="course-content">
+                        <strong>{{ cours.nom_cours }}</strong>
+                        <p>{{ cours.description_courte }}</p>
+                        <span class="discipline">Discipline : {{ cours.nom_domaine }}</span>
+                        <span class="duration">Durée : {{ cours.duree_totale }} minutes</span>
+                    </div>
+                </a>
+            </div>
+        {% else %}
+            <div class="no-favorites-message" style="text-align: center; width: 100%; padding: 20px;">
+                Aucun cours complété...
+            </div>
+        {% endfor %}
+        </div>
+    </div>
 
-                Object.values(tabs).forEach(sectionId => {
-                    document.getElementById(sectionId).classList.add("hidden")
-                });
+</div>
 
-                document.getElementById(tabs[tabId]).classList.remove("hidden")
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const tabs = {
+        "profile-tab": "profile-section",
+        "favorites-tab": "favorite-section",
+        "completed-tab": "completed-section"
+    };
 
-                document.querySelectorAll(".sidebar a").forEach(link => link.classList.remove("active"));
-                this.classList.add("active");
+    Object.keys(tabs).forEach(tabId => {
+        document.getElementById(tabId).addEventListener("click", function(e) {
+            e.preventDefault();
 
+            Object.values(tabs).forEach(sectionId => {
+                document.getElementById(sectionId).classList.add("hidden")
             });
+
+            document.getElementById(tabs[tabId]).classList.remove("hidden")
+
+            document.querySelectorAll(".sidebar a").forEach(link => link.classList.remove("active"));
+            this.classList.add("active");
         });
-        addFavoriteButtonListeners();
     });
 
-    function addFavoriteButtonListeners() {
-                document.querySelectorAll(".favorite-btn").forEach(button => {
-                    button.addEventListener("click", function() {
-                        event.stopPropagation();
-                        event.preventDefault();
+    addFavoriteButtonListeners();
+});
 
-                        const isFavorited = this.classList.toggle("favorited")
+function addFavoriteButtonListeners() {
+    document.querySelectorAll(".favorite-btn").forEach(button => {
+        button.addEventListener("click", function(event) {
+            event.stopPropagation();
+            event.preventDefault();
 
+            const confirmation = confirm("Êtes-vous sûr de vouloir arrêter de suivre ce cours ? Vous perdrez votre progression.");
+            if (!confirmation) return;
 
-                        fetch(`/suivre/${this.dataset.id}`, {
-                            method: 'DELETE',
-                        })
-                        .then(response => {
-                            if(response.ok) {
+            const isFavorited = this.classList.toggle("favorited");
 
-                                const courseCard = this.closest('.course-card');
-                                if(courseCard) {
-                                    courseCard.remove()
-                                }
-                            } else {
-                                console.error("Erreur lors de la suppression du suivi.");
-                            }
-                        })
-                        .catch(error => console.error('Erreur :', error));
-                    });
-                });
-            }
-    </script>
-
-
+            fetch(`/suivre/${this.dataset.id}`, {
+                method: 'DELETE',
+            })
+            .then(response => {
+                if (response.ok) {
+                    const courseCard = this.closest('.course-card');
+                    if (courseCard) {
+                        courseCard.remove();
+                    }
+                } else {
+                    console.error("Erreur lors de la suppression du suivi.");
+                }
+            })
+            .catch(error => console.error('Erreur :', error));
+        });
+    });
+}
+</script>
 {% endblock %}

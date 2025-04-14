@@ -106,6 +106,17 @@ def get_cours_chapitres_api(cours_id):
     connection.close()
     return jsonify(chapitres), 200
 
+@app.route('/api/cours_complete', methods=['GET'])
+def get_cours_completer():
+    user_id = session.get("user_id")
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+    cursor.execute("SELECT id_cours FROM cours_complete WHERE id_user = %s", (user_id,))
+    cours = cursor.fetchall()
+    cursor.close()
+    connection.close()
+    return jsonify(cours)
+
 
 def get_cours_chapitres(cours_id):
     connection = get_db_connection()
@@ -154,3 +165,44 @@ def get_chapitre_completed_map(id_user, chapitres):
             chapitres_complete_dict[completed_chapitre] = True
 
     return chapitres_complete_dict
+
+
+def is_all_chapitres_completed(id_user, chapitres):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    chapitres_ids = [chapitre["id_chap"] for chapitre in chapitres]
+
+    if not chapitres_ids:
+        return False
+
+    placeholders = ','.join(['%s'] * len(chapitres_ids))
+    query = f"""
+        SELECT COUNT(*) FROM chapitres_complete 
+        WHERE id_user = %s AND id_chap IN ({placeholders})
+    """
+    params = [id_user] + chapitres_ids
+    cursor.execute(query, params)
+    completed_count = cursor.fetchone()[0]
+
+    return completed_count == len(chapitres_ids)
+
+
+def get_cours_completes_profile(id_user):
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT c.*, d.nom_dom AS nom_domaine
+        FROM cours_complete cc
+        JOIN cours c ON cc.id_cours = c.id_cours
+        JOIN discipline d ON c.id_domaine = d.id_domaine
+        WHERE cc.id_user = %s
+    """, (id_user,))
+
+    result = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return result
+
+

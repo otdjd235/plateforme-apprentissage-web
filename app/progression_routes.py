@@ -82,3 +82,23 @@ def complete_chapitre():
     cursor.close()
     connection.close()
     return '', 204
+
+
+def is_cours_completed(id_user, id_cours):
+    connection = get_db_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        SELECT 1
+        FROM cours_complete
+        WHERE id_user = %s AND id_cours = %s
+        LIMIT 1
+    """, (id_user, id_cours))
+
+    result = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    return result is not None
+    
