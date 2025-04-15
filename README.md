@@ -108,5 +108,5 @@ Puis ouvrez [**http://127.0.0.1:5000/**](http://127.0.0.1:5000/) dans votre navi
 | **Appliquer les migrations**  | `./apply_migrations.sh`                            |
 | **Lancer Flask**              | `python run.py`                                    |
 
-Après ces étapes, votre environnement sera prêt à fonctionner correctement ! 🚀
+Après ces étapes, votre environnement sera prêt à fonctionner correctement
 
