@@ -1,6 +1,3 @@
-#!/bin/bash
-
-# Charger les variables depuis .env
 export $(grep -v '^#' .env | xargs)
 
 echo "Applying migrations to database: $DB_NAME..."
