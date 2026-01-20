@@ -26,22 +26,46 @@ avec navigation par catégories et pages de leçons.
 ## Stack
 HTML, CSS, JavaScript
 
-##  Tester le projet en local
-
-> Ce projet utilise un backend (templates Jinja + API).  
-> Il ne peut pas être exécuté directement en ligne via GitHub Pages.  
+##  Tester le projet en local 
 > Pour tester la version complète sur votre machine :
 
 ### Prérequis
-- Python 3.9+  
+- Python 3.8+  
+- MySQL  
 - pip  
 
 ### Installation
 
-> bash
-> git clone https://github.comotdjd235/plateforme-apprentissage-web.git
+>```bash
+> git clone https://github.com/otdjd235/plateforme-apprentissage-web.git
 > cd plateforme-apprentissage-web
 > pip install -r requirements.txt
+
+### Configuration minimale
+
+FLASK_APP=run.py
+FLASK_ENV=development
+DB_USER=root
+DB_PASSWORD=your_password
+DB_HOST=localhost
+DB_NAME=portfolio_db
+SECRET_KEY=dev_secret_key
+
+### Créer la base de données
+
+Ouvrir MySQL:  mysql -u root -p
+Créeer la BD: CREATE DATABASE portfolio_db;
+
+###Appliquer les migrations SQL
+
+./database/apply_migrations.sh   # macOS / Linux / Git Bash
+./database/apply_migrations.ps1  # Windows PowerShell
+
+## Lancer l’application Flask
+python run.py
+
+Puis ouvrir dans un navigateur :
+http://127.0.0.1:5000/
 
 ## 📸 Captures d’écran
 ![Accueil](Capture%20d%E2%80%99%C3%A9cran%202026-01-20%20073801.png)
