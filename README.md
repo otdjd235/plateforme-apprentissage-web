@@ -1,8 +1,32 @@
+# Plateforme web d’apprentissage de cours gratuits
+
+Projet initialement développé en équipe dans le cadre d’un cours universitaire.
+Cette version est publiée à des fins de portfolio.
+
+## Objectif
+Développer une plateforme web permettant de proposer des cours gratuits
+avec navigation par catégories et pages de leçons.
+
+## Fonctionnalités
+- Catalogue de cours
+- Pages de leçons
+- Navigation par catégories
+- Interface responsive
+- Structure front-end modulaire
+
+## Ma contribution
+- Développement en partie du front-end
+- Développement intégrale de la Base de Donnée
+- Developpement partielle requetes
+- Intégration UI
+- Gestion de la progression de l'apprentissage
+  
+## Stack
+HTML, CSS, JavaScript
+
 #  Guide de Configuration de l'Environnement de Développement
 
 Ce fichier explique comment préparer votre environnement pour exécuter ce projet Flask + MySQL.
-
----
 
 ##  1. Installer les Dépendances
 
