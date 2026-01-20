@@ -38,10 +38,10 @@ HTML, CSS, JavaScript
 
 ### Installation
 
-bash
-git clone https://github.comotdjd235/plateforme-apprentissage-web.git
-cd plateforme-apprentissage-web
-pip install -r requirements.txt
+> bash
+> git clone https://github.comotdjd235/plateforme-apprentissage-web.git
+> cd plateforme-apprentissage-web
+> pip install -r requirements.txt
 
 ## 📸 Captures d’écran
 ![Accueil](Capture%20d%E2%80%99%C3%A9cran%202026-01-20%20073801.png)
