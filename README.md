@@ -42,13 +42,13 @@ HTML, CSS, JavaScript
 
 ### Configuration minimale
 
-FLASK_APP=run.py
-FLASK_ENV=development
-DB_USER=root
-DB_PASSWORD=your_password
-DB_HOST=localhost
-DB_NAME=portfolio_db
-SECRET_KEY=dev_secret_key
+- FLASK_APP=run.py
+- FLASK_ENV=development
+- DB_USER=root
+- DB_PASSWORD=your_password
+- DB_HOST=localhost
+- DB_NAME=portfolio_db
+- SECRET_KEY=dev_secret_key
 
 ### Créer la base de données
 
