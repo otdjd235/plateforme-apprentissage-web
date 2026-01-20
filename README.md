@@ -29,7 +29,7 @@ HTML, CSS, JavaScript
 ##  Tester le site
 https://otdjd235.github.io/plateforme-apprentissage-web/
 ## 📸 Captures d’écran
-![Accueil](docs/home.png)
+![Accueil](Capture%20d%E2%80%99%C3%A9cran%202026-01-20%20073801.png)
 ![Catalogue](docs/catalogue.png)
 
 ---
