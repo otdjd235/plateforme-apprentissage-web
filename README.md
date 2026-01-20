@@ -8,14 +8,13 @@ Développer une plateforme web permettant de proposer des cours gratuits
 avec navigation par catégories et pages de leçons.
 
 ## Fonctionnalités
-- Catalogue de cours
-- Pages de leçons
-- Navigation par catégories
-- Interface responsive
-- Structure front-end modulaire
-- Authentification utilisateurs
-- Sauvegarde de progression
-- Base de données
+- Catalogue de cours avec recherche et filtres  
+- Navigation par disciplines  
+- Pages de leçons  
+- Système de favoris  
+- Suivi de progression  
+- Backend Flask + base de données MySQL  
+- Interface front-end en HTML/CSS + JavaScript 
 
 ## Ma contribution
 - Développement intégrale de la Base de Donnée
@@ -53,8 +52,8 @@ SECRET_KEY=dev_secret_key
 
 ### Créer la base de données
 
-Ouvrir MySQL:  mysql -u root -p
-Créeer la BD: CREATE DATABASE portfolio_db;
+- Ouvrir MySQL:  mysql -u root -p
+- Créeer la BD: CREATE DATABASE portfolio_db;
 
 ###Appliquer les migrations SQL
 
@@ -64,8 +63,7 @@ Créeer la BD: CREATE DATABASE portfolio_db;
 ## Lancer l’application Flask
 python run.py
 
-Puis ouvrir dans un navigateur :
-http://127.0.0.1:5000/
+- Puis ouvrir dans un navigateur :http://127.0.0.1:5000/
 
 ## 📸 Captures d’écran
 ![Accueil](Capture%20d%E2%80%99%C3%A9cran%202026-01-20%20073801.png)
