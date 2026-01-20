@@ -55,10 +55,10 @@ SECRET_KEY=dev_secret_key
 - Ouvrir MySQL:  mysql -u root -p
 - Créeer la BD: CREATE DATABASE portfolio_db;
 
-###Appliquer les migrations SQL
+### Appliquer les migrations SQL
 
-./database/apply_migrations.sh   # macOS / Linux / Git Bash
-./database/apply_migrations.ps1  # Windows PowerShell
+- ./database/apply_migrations.sh # macOS / Linux / Git Bash
+- ./database/apply_migrations.ps1  # Windows PowerShell
 
 ## Lancer l’application Flask
 python run.py
