@@ -31,6 +31,6 @@ https://otdjd235.github.io/plateforme-apprentissage-web/
 ## 📸 Captures d’écran
 ![Accueil](Capture%20d%E2%80%99%C3%A9cran%202026-01-20%20073801.png)
 ![Cours](Capture%20d%E2%80%99%C3%A9cran%202026-01-20%20073917.png)
-![Chapitres et exos](Capture%20d%E2%80%99%C3%A9cran%202026-01-20%20073917.png)
+![Chapitres et exos](Capture%20d%E2%80%99%C3%A9cran%202026-01-20%20074037.png)
 
 ---
