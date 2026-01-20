@@ -26,8 +26,23 @@ avec navigation par catégories et pages de leçons.
 ## Stack
 HTML, CSS, JavaScript
 
-##  Tester le site
-https://otdjd235.github.io/plateforme-apprentissage-web/
+##  Tester le projet en local
+
+> Ce projet utilise un backend (templates Jinja + API).  
+> Il ne peut pas être exécuté directement en ligne via GitHub Pages.  
+> Pour tester la version complète sur votre machine :
+
+### Prérequis
+- Python 3.9+  
+- pip  
+
+### Installation
+
+bash
+git clone https://github.comotdjd235/plateforme-apprentissage-web.git
+cd plateforme-apprentissage-web
+pip install -r requirements.txt
+
 ## 📸 Captures d’écran
 ![Accueil](Capture%20d%E2%80%99%C3%A9cran%202026-01-20%20073801.png)
 ![Cours](Capture%20d%E2%80%99%C3%A9cran%202026-01-20%20073917.png)
